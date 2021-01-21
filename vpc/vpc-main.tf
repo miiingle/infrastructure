@@ -1,4 +1,4 @@
-# Query all AWS Availibility Zone
+# Query all AWS Availability Zone
 data "aws_availability_zones" "available" {}
 
 # VPC Creation
