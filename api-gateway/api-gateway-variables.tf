@@ -1,4 +1,3 @@
-variable "aws_region" {}
 variable "org" {}
 variable "env" {}
 variable "common_tags" {}

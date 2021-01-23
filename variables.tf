@@ -26,7 +26,7 @@ variable "common_tags" {
   }
 }
 
-#VPC
+# VPC
 variable "vpc_cidr" {
   description = "CIDR block for VPC"
   type        = string
@@ -69,4 +69,15 @@ variable "eks_iam_mapping" {
 variable "eks_worker_instance_type" {
   type    = string
   default = "t3.medium"
+}
+
+# RDS
+variable "rds_instance_type" {
+  type    = string
+  default = "db.t3.micro"
+}
+
+variable "rds_instance_port" {
+  type    = number
+  default = 5432
 }
