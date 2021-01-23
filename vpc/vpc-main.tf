@@ -1,17 +1,14 @@
-# Query all AWS Availability Zone
 data "aws_availability_zones" "available" {}
 
-# VPC Creation
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
   enable_dns_support   = true
-  tags = {
+  tags = merge({
     Name = "${var.org}-${var.env}-vpc"
-  }
+  }, var.common_tags)
 }
 
-# Creating Internet Gateway
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.vpc.id
   tags = {
@@ -19,7 +16,6 @@ resource "aws_internet_gateway" "gw" {
   }
 }
 
-# Public Route Table
 resource "aws_route_table" "public_route" {
   vpc_id = aws_vpc.vpc.id
 
@@ -28,7 +24,6 @@ resource "aws_route_table" "public_route" {
   }
 }
 
-# Private Route Table
 resource "aws_default_route_table" "private_route" {
   default_route_table_id = aws_vpc.vpc.default_route_table_id
   tags = {
@@ -42,7 +37,6 @@ resource "aws_route" "ngw" {
   nat_gateway_id         = aws_nat_gateway.nat_gateway.id
 }
 
-# Public Subnet
 resource "aws_subnet" "public_subnet" {
   count                   = length(var.public_cidrs)
   cidr_block              = var.public_cidrs[count.index]
@@ -55,20 +49,18 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
-# Private Subnet
 resource "aws_subnet" "private_subnet" {
   count             = length(var.private_cidrs)
   cidr_block        = var.private_cidrs[count.index]
   vpc_id            = aws_vpc.vpc.id
   availability_zone = data.aws_availability_zones.available.names[count.index]
   tags = {
-    Name                                                       = "${var.org}-${var.env}-private-subnet.${count.index + 1}"
-    "kubernetes.io/cluster/${var.env}-${var.eks_cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb"                          = "1"
+    Name                                            = "${var.org}-${var.env}-private-subnet.${count.index + 1}"
+    "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
+    "kubernetes.io/role/internal-elb"               = "1"
   }
 }
 
-# Associate Public Subnet with Public Route Table
 resource "aws_route_table_association" "public_subnet_assoc" {
   count          = length(var.public_cidrs)
   route_table_id = aws_route_table.public_route.id
@@ -76,7 +68,6 @@ resource "aws_route_table_association" "public_subnet_assoc" {
   depends_on     = [aws_route_table.public_route, aws_subnet.public_subnet]
 }
 
-# Associate Private Subnet with Private Route Table
 resource "aws_route_table_association" "private_subnet_assoc" {
   count          = length(var.private_cidrs)
   route_table_id = aws_default_route_table.private_route.id

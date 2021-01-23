@@ -18,6 +18,14 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
+variable "common_tags" {
+  description = "Tags that we apply to all resources"
+  type        = map(string)
+  default = {
+    "MiiingleEnv" = "dev"
+  }
+}
+
 #VPC
 variable "vpc_cidr" {
   description = "CIDR block for VPC"
@@ -41,5 +49,24 @@ variable "private_cidrs" {
 variable "eks_cluster_name" {
   description = "EKS cluster name"
   type        = string
-  default     = "eks"
+  default     = "miiingle-dev-eks"
+}
+
+variable "eks_cluster_version" {
+  type    = string
+  default = "1.18"
+}
+
+variable "eks_iam_mapping" {
+  type = map(string)
+
+  default = {
+    "ci-user" = "build_pipeline"
+    "dev1"    = "lyndon.bibera@headhuntr.io"
+  }
+}
+
+variable "eks_worker_instance_type" {
+  type    = string
+  default = "t3.medium"
 }
