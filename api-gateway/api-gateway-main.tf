@@ -44,3 +44,37 @@ resource "aws_apigatewayv2_route" "eks_internal_http_methods" {
   operation_name = "${var.http_methods[count.index]} Resource"
   target         = aws_apigatewayv2_route.backend_application.target
 }
+
+resource "aws_apigatewayv2_stage" "prod" {
+  api_id      = aws_apigatewayv2_api.main.id
+  name        = "$default"
+  description = "Production API"
+  auto_deploy = true
+
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.api_logs.arn
+    format = jsonencode(
+      {
+        httpMethod     = "$context.httpMethod"
+        stage          = "$context.stage"
+        path           = "$context.path"
+        ip             = "$context.identity.sourceIp"
+        protocol       = "$context.protocol"
+        requestId      = "$context.requestId"
+        requestTime    = "$context.requestTime"
+        responseLength = "$context.responseLength"
+        status         = "$context.status"
+      }
+    )
+  }
+
+  default_route_settings {
+    logging_level            = "OFF"
+    data_trace_enabled       = false
+    detailed_metrics_enabled = false
+    throttling_burst_limit   = 100
+    throttling_rate_limit    = 100
+  }
+
+  tags = var.common_tags
+}
