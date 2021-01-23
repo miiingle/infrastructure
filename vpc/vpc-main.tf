@@ -44,7 +44,7 @@ resource "aws_subnet" "public_subnet" {
   map_public_ip_on_launch = true
   availability_zone       = data.aws_availability_zones.available.names[count.index]
   tags = {
-    Name                     = "${var.org}-${var.env}-public-subnet.${count.index + 1}"
+    Name                     = "${var.org}-${var.env}-public-subnet-${count.index + 1}"
     "kubernetes.io/role/elb" = "1"
   }
 }
@@ -55,7 +55,7 @@ resource "aws_subnet" "private_subnet" {
   vpc_id            = aws_vpc.vpc.id
   availability_zone = data.aws_availability_zones.available.names[count.index]
   tags = {
-    Name                                            = "${var.org}-${var.env}-private-subnet.${count.index + 1}"
+    Name                                            = "${var.org}-${var.env}-private-subnet-${count.index + 1}"
     "kubernetes.io/cluster/${var.eks_cluster_name}" = "shared"
     "kubernetes.io/role/internal-elb"               = "1"
   }

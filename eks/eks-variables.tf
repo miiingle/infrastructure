@@ -11,5 +11,5 @@ variable "eks_cluster_version" {}
 
 variable "current_account_id" {
   description = "The account id of the current user"
-  type = string
+  type        = string
 }

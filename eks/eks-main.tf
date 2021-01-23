@@ -22,12 +22,12 @@ module "eks_cluster" {
 
   map_accounts = [var.current_account_id]
   map_users = [
-  for user, iam in var.eks_iam_mapping :
-  {
-    userarn  = "arn:aws:iam::${var.current_account_id}:user/${iam}"
-    username = user
-    groups   = ["system:masters"]
-  }
+    for user, iam in var.eks_iam_mapping :
+    {
+      userarn  = "arn:aws:iam::${var.current_account_id}:user/${iam}"
+      username = user
+      groups   = ["system:masters"]
+    }
   ]
 
   node_groups = [
