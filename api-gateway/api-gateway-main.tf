@@ -69,7 +69,6 @@ resource "aws_apigatewayv2_stage" "prod" {
   }
 
   default_route_settings {
-    logging_level            = "OFF"
     data_trace_enabled       = false
     detailed_metrics_enabled = false
     throttling_burst_limit   = 100

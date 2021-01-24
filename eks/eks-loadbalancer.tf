@@ -17,6 +17,10 @@ resource "kubernetes_service" "load_balancer" {
       target_port = 8080
     }
   }
+
+  depends_on = [
+    module.eks_cluster
+  ]
 }
 
 # workaround to extract the LB name

@@ -4,4 +4,8 @@ resource "kubernetes_secret" "all_secrets" {
   }
 
   data = var.secrets
+
+  depends_on = [
+    module.eks_cluster
+  ]
 }

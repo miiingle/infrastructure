@@ -11,7 +11,7 @@ resource "aws_db_instance" "db_transaction" {
   engine_version         = "11.6"
   publicly_accessible    = false
   port                   = var.instance_port
-  vpc_security_group_ids = []
+  vpc_security_group_ids = [aws_security_group.db_transaction.id]
   db_subnet_group_name   = aws_db_subnet_group.transaction_db.name
 
   final_snapshot_identifier = "${var.org}-${var.env}-rds-${random_pet.rds_instance_name.id}-final-snapshot-${formatdate("YYYYMMDDHHmm", timestamp())}"
