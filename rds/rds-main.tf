@@ -3,7 +3,7 @@ resource "aws_db_instance" "db_transaction" {
   storage_type          = "gp2"
   allocated_storage     = 50
   max_allocated_storage = 1000
-  identifier            = "${var.org}-${var.env}-rds-${random_pet.db_name.id}"
+  identifier            = "${var.org}-${var.env}-rds-${random_pet.rds_instance_name.id}"
   username              = random_string.rds_username.result
   password              = random_password.rds_password.result
 
@@ -42,6 +42,7 @@ resource "random_string" "rds_username" {
 
 resource "random_password" "rds_password" {
   length = 32
+  special = false
 }
 
-resource "random_pet" "db_name" {}
+resource "random_pet" "rds_instance_name" {}
