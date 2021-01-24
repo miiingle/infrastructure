@@ -56,3 +56,12 @@ module "rds" {
   vpc_id  = module.vpc.vpc_id
   subnets = module.vpc.private_subnets
 }
+
+module "sg_rules" {
+  source = "./sg-rules"
+
+  rds_instance_port = var.rds_instance_port
+
+  eks_worker_sg_id   = module.eks.worker_sg_id
+  rds_instance_sg_id = module.rds.instance_sg_id
+}
