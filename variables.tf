@@ -81,3 +81,16 @@ variable "rds_instance_port" {
   type    = number
   default = 5432
 }
+
+# API Gateway
+variable "api_gateway_domain_root" {
+  description = "The domain that we want to address the api gateway endpoint"
+  type        = string
+  default     = "miiingle.net"
+}
+
+variable "api_gateway_domain_prefix" {
+  description = "The subdomain for the api gateway"
+  type        = string
+  default     = "dev.api"
+}

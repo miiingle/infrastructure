@@ -10,3 +10,15 @@ variable "http_methods" {
   type        = list(string)
   default     = ["GET", "POST", "PUT", "PATCH", "DELETE"]
 }
+
+variable "domain_root" {
+  description = "The base domain identifier that we should look for in route53, this is optional"
+  type        = string
+  default     = ""
+}
+
+variable "domain_prefix" {
+  description = "The subdomain for the api gateway domain"
+  type        = string
+  default     = "api"
+}

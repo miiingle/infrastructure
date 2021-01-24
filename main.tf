@@ -35,10 +35,12 @@ module "eks" {
 }
 
 module "api_gateway" {
-  source      = "./api-gateway"
-  org         = var.org
-  env         = var.env
-  common_tags = var.common_tags
+  source        = "./api-gateway"
+  org           = var.org
+  env           = var.env
+  common_tags   = var.common_tags
+  domain_root   = var.api_gateway_domain_root
+  domain_prefix = var.api_gateway_domain_prefix
 
   vpc_id                  = module.vpc.vpc_id
   vpc_link_subnets        = module.vpc.private_subnets
