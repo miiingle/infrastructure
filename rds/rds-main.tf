@@ -14,7 +14,7 @@ resource "aws_db_instance" "db_transaction" {
   vpc_security_group_ids = []
   db_subnet_group_name   = aws_db_subnet_group.transaction_db.name
 
-  final_snapshot_identifier = "${var.org}-${var.env}-rds-final-snapshot-${formatdate("YYYYMMDDHHmm", timestamp())}"
+  final_snapshot_identifier = "${var.org}-${var.env}-rds-${random_pet.rds_instance_name.id}-final-snapshot-${formatdate("YYYYMMDDHHmm", timestamp())}"
   deletion_protection       = false
 
   lifecycle {
@@ -41,7 +41,7 @@ resource "random_string" "rds_username" {
 }
 
 resource "random_password" "rds_password" {
-  length = 32
+  length  = 32
   special = false
 }
 

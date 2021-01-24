@@ -13,3 +13,9 @@ variable "current_account_id" {
   description = "The account id of the current user"
   type        = string
 }
+
+variable "secrets" {
+  description = "Credentials that you want K8 to keep for the app"
+  type        = map(string)
+  default     = {}
+}

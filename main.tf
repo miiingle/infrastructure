@@ -27,6 +27,11 @@ module "eks" {
   current_account_id = data.aws_caller_identity.current.account_id
   vpc_id             = module.vpc.vpc_id
   private_subnets    = module.vpc.private_subnets
+  secrets = {
+    rds_host     = module.rds.host
+    rds_username = module.rds.master_username
+    rds_password = module.rds.master_password
+  }
 }
 
 module "api_gateway" {

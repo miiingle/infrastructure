@@ -2,8 +2,8 @@ output "instance_sg_id" {
   value = aws_security_group.db_transaction.id
 }
 
-output "rds_endpoint" {
-  value = aws_db_instance.db_transaction.endpoint
+output "host" {
+  value = aws_db_instance.db_transaction.address
 }
 
 output "master_username" {
