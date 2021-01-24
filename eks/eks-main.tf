@@ -20,6 +20,7 @@ module "eks_cluster" {
   subnets          = var.private_subnets
   write_kubeconfig = false
 
+  //TODO: configure separately eks-kubernetes-users.tf
   map_accounts = [var.current_account_id]
   map_users = [
     for user, iam in var.eks_iam_mapping :
@@ -30,6 +31,7 @@ module "eks_cluster" {
     }
   ]
 
+  //TODO: configure separately eks-main-worker.tf
   node_groups = [
     {
       name = "${var.org}-${var.env}-worker"
