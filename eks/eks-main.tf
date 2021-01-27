@@ -32,6 +32,8 @@ module "eks_cluster" {
   ]
 
   //TODO: configure separately eks-main-worker.tf
+  //TODO: use spot
+  //https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/spot-instances.md
   node_groups = [
     {
       name = "${var.org}-${var.env}-worker"

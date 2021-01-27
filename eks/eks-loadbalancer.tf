@@ -18,8 +18,12 @@ resource "kubernetes_service" "load_balancer" {
     }
   }
 
+  //TODO: figure out the rest of the dependencies
+  //bug - permissions were delete before this during destroy
   depends_on = [
-    module.eks_cluster
+    module.eks_cluster,
+    data.aws_eks_cluster_auth.cluster,
+    data.aws_eks_cluster.cluster
   ]
 }
 
