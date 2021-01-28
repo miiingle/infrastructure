@@ -23,6 +23,7 @@ module "eks" {
   eks_cluster_name         = var.eks_cluster_name
   eks_iam_mapping          = var.eks_iam_mapping
   eks_worker_instance_type = var.eks_worker_instance_type
+  manage_aws_auth          = var.eks_manage_aws_auth
 
   current_account_id = data.aws_caller_identity.current.account_id
   vpc_id             = module.vpc.vpc_id

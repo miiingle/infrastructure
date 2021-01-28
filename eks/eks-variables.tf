@@ -9,6 +9,12 @@ variable "eks_iam_mapping" {}
 variable "eks_worker_instance_type" {}
 variable "eks_cluster_version" {}
 
+variable "manage_aws_auth" {
+  description = "Create mapping between AWS Auth and K8 configmap"
+  type        = bool
+  default     = false
+}
+
 variable "current_account_id" {
   description = "The account id of the current user"
   type        = string

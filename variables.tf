@@ -66,6 +66,12 @@ variable "eks_iam_mapping" {
   }
 }
 
+variable "eks_manage_aws_auth" {
+  description = "Switch this to false before deletion"
+  type        = bool
+  default     = true
+}
+
 variable "eks_worker_instance_type" {
   type    = string
   default = "t3.medium"

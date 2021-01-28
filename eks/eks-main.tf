@@ -19,6 +19,7 @@ module "eks_cluster" {
   vpc_id           = var.vpc_id
   subnets          = var.private_subnets
   write_kubeconfig = false
+  manage_aws_auth  = var.manage_aws_auth
 
   //TODO: configure separately eks-kubernetes-users.tf
   map_accounts = [var.current_account_id]
@@ -31,6 +32,7 @@ module "eks_cluster" {
     }
   ]
 
+  //TODO: use node_groups_defaults for common params
   node_groups = [
     {
       name = "${var.org}-${var.env}-eks-worker-on-demand"
