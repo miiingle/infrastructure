@@ -31,26 +31,60 @@ module "eks_cluster" {
     }
   ]
 
-  //TODO: configure separately eks-main-worker.tf
-  //TODO: use spot
-  //https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/spot-instances.md
   node_groups = [
     {
-      name = "${var.org}-${var.env}-worker"
+      name = "${var.org}-${var.env}-eks-worker-on-demand"
 
       k8s_labels = {
         Environment = var.env
         Type        = "standard"
       }
 
-      instance_type    = var.eks_worker_instance_type
-      desired_capacity = 1
-      min_capacity     = 1
-      max_capacity     = 10
-      subnets          = var.private_subnets
+      instance_type       = var.eks_worker_instance_type
+      asg_max_size        = 1
+      kubelet_extra_args  = "--node-labels=node.kubernetes.io/lifecycle=normal"
+      suspended_processes = ["AZRebalance"]
 
       additional_tags = merge({
-        Name = "${var.org}-${var.env}-eks-worker"
+        Name = "${var.org}-${var.env}-eks-worker-on-demand"
+      }, var.common_tags)
+    },
+
+    {
+      name = "${var.org}-${var.env}-eks-worker-spot-main"
+
+      k8s_labels = {
+        Environment = var.env
+        Type        = "standard"
+      }
+
+      spot_price          = "0.199"
+      instance_type       = var.eks_worker_instance_type
+      asg_max_size        = 20
+      kubelet_extra_args  = "--node-labels=node.kubernetes.io/lifecycle=spot"
+      suspended_processes = ["AZRebalance"]
+
+      additional_tags = merge({
+        Name = "${var.org}-${var.env}-eks-worker-spot-main"
+      }, var.common_tags)
+    },
+
+    {
+      name = "${var.org}-${var.env}-eks-worker-spot-backup"
+
+      k8s_labels = {
+        Environment = var.env
+        Type        = "standard"
+      }
+
+      spot_price          = "0.20"
+      instance_type       = var.eks_worker_instance_type
+      asg_max_size        = 20
+      kubelet_extra_args  = "--node-labels=node.kubernetes.io/lifecycle=spot"
+      suspended_processes = ["AZRebalance"]
+
+      additional_tags = merge({
+        Name = "${var.org}-${var.env}-eks-worker-spot-backup"
       }, var.common_tags)
     }
   ]
