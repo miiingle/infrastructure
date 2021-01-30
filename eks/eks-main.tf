@@ -21,6 +21,14 @@ module "eks_cluster" {
   write_kubeconfig = false
   manage_aws_auth  = var.manage_aws_auth
 
+  cluster_enabled_log_types = [
+    "api",
+    "audit",
+    "authenticator",
+    "controllerManager",
+    "scheduler"
+  ]
+
   //TODO: configure separately eks-kubernetes-users.tf
   map_accounts = [var.current_account_id]
   map_users = [

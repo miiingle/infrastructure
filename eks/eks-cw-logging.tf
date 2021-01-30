@@ -6,12 +6,6 @@ locals {
   cloudwatch_namespace = "amazon-cloudwatch"
 }
 
-//TODO: change this to a more restrictive role
-resource "aws_iam_role_policy_attachment" "cluster_CloudWatchFullAccess" {
-  policy_arn = "arn:aws:iam::aws:policy/CloudWatchFullAccess"
-  role       = module.eks_cluster.worker_iam_role_name
-}
-
 resource "kubernetes_namespace" "cloudwatch" {
   metadata {
     name = local.cloudwatch_namespace
