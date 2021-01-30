@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: miiingle-user-api
+  labels:
+    app: miiingle
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: miiingle
+  template:
+    metadata:
+      labels:
+        app: miiingle
+    spec:
+      containers:
+      - name: miiingle-net-user-api
+        image: startupbuilder/miiingle-net-user-api:latest
+        imagePullPolicy: Always
+        env:
+          - name: DATASOURCES_DEFAULT_URL
+            valueFrom:
+              secretKeyRef:
+                key: rds_url
+                name: miiingle.dev.secrets
+          - name: DATASOURCES_DEFAULT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: rds_username
+                name: miiingle.dev.secrets
+          - name: DATASOURCES_DEFAULT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: rds_password
+                name: miiingle.dev.secrets
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
