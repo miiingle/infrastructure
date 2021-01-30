@@ -1,6 +1,17 @@
 
 //TODO: figure this out without needing cloudwatch-agent.yml
 
+resource "kubernetes_service_account" "cloudwatch_agent" {
+  metadata {
+    name = "cloudwatch-agent"
+    namespace = local.cloudwatch_namespace
+  }
+
+  depends_on = [
+    kubernetes_namespace.cloudwatch
+  ]
+}
+
 //resource "kubernetes_config_map" "cwagent_config" {
 //  metadata {
 //    name      = "cwagentconfig"
