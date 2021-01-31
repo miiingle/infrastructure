@@ -1,0 +1,12 @@
+clusterName: "miiingle-dev-eks"
+clusterRegion: "us-east-1"
+
+namespace: "amazon-cloudwatch"
+
+fluentBit:
+  image: "amazon/aws-for-fluent-bit"
+  tag: 2.10.0
+
+cloudwatchAgent:
+  image: "amazon/cloudwatch-agent"
+  tag: "1.247347.3b250378"

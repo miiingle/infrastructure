@@ -1,0 +1,3 @@
+Cloudwatch Utilities Installed on cluster: {{ .Values.clusterName }}!
+- Fluent Bit for logging ({{ .Values.fluentBit.tag }})
+- Cloudwatch Agent for Container Insights ({{ .Values.cloudwatchAgent.tag }})

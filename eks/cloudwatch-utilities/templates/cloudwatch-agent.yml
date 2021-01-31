@@ -1,3 +1,11 @@
+# create cwagent service account and role binding
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cloudwatch-agent
+  namespace: {{ .Values.namespace }}
+
+---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -22,6 +30,7 @@ rules:
     resources: ["configmaps"]
     resourceNames: ["cwagent-clusterleader"]
     verbs: ["get","update"]
+
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -30,11 +39,12 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: cloudwatch-agent
-    namespace: amazon-cloudwatch
+    namespace: {{ .Values.namespace }}
 roleRef:
   kind: ClusterRole
   name: cloudwatch-agent-role
   apiGroup: rbac.authorization.k8s.io
+
 ---
 apiVersion: v1
 data:
@@ -43,12 +53,12 @@ data:
   cwagentconfig.json: |
     {
       "agent": {
-        "region": "us-east-1"
+        "region": "{{ .Values.clusterRegion }}"
       },
       "logs": {
         "metrics_collected": {
           "kubernetes": {
-            "cluster_name": "miiingle-dev-eks",
+            "cluster_name": "{{ .Values.clusterName }}",
             "metrics_collection_interval": 60
           }
         },
@@ -58,14 +68,15 @@ data:
 kind: ConfigMap
 metadata:
   name: cwagentconfig
-  namespace: amazon-cloudwatch
+  namespace: {{ .Values.namespace }}
+
 ---
 # deploy cwagent as daemonset
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: cloudwatch-agent
-  namespace: amazon-cloudwatch
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     matchLabels:
@@ -77,11 +88,7 @@ spec:
     spec:
       containers:
         - name: cloudwatch-agent
-          image: amazon/cloudwatch-agent:1.247347.3b250378
-#          ports:
-#            - containerPort: 8125
-#              hostPort: 8125
-#              protocol: UDP
+          image: "{{ .Values.cloudwatchAgent.image }}:{{ .Values.cloudwatchAgent.tag }}"
           resources:
             limits:
               cpu:  200m

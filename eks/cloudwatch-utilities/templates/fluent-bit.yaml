@@ -2,7 +2,8 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: fluent-bit
-  namespace: amazon-cloudwatch
+  namespace: {{ .Values.namespace }}
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -19,6 +20,7 @@ rules:
       - pods
       - pods/logs
     verbs: ["get", "list", "watch"]
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -31,13 +33,14 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: fluent-bit
-    namespace: amazon-cloudwatch
+    namespace: {{ .Values.namespace }}
+
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: fluent-bit-config
-  namespace: amazon-cloudwatch
+  namespace: {{ .Values.namespace }}
   labels:
     k8s-app: fluent-bit
 data:
@@ -54,11 +57,11 @@ data:
         storage.sync              normal
         storage.checksum          off
         storage.backlog.mem_limit 5M
-        
+
     @INCLUDE application-log.conf
     @INCLUDE dataplane-log.conf
     @INCLUDE host-log.conf
-  
+
   application-log.conf: |
     [INPUT]
         Name                tail
@@ -169,7 +172,7 @@ data:
         log_stream_prefix   ${HOST_NAME}-
         auto_create_group   true
         extra_user_agent    container-insights
-    
+
   host-log.conf: |
     [INPUT]
         Name                tail
@@ -246,11 +249,30 @@ data:
         Time_Key            time
         Time_Format         %Y-%m-%dT%H:%M:%S.%LZ
 ---
+
+# create configmap for cluster name and aws region for CloudWatch Logs
+# need to replace the placeholders  and
+# and need to replace "On" and "2020"
+# and need to replace "Off" and "On"
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluent-bit-cluster-info
+  namespace: {{ .Values.namespace }}
+data:
+  cluster.name: {{ .Values.clusterName }}
+  logs.region: {{ .Values.clusterRegion }}
+  http.server: "On"
+  http.port: "2020"
+  read.head: "Off"
+  read.tail: "On"
+
+---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: fluent-bit
-  namespace: amazon-cloudwatch
+  namespace: {{ .Values.namespace }}
   labels:
     k8s-app: fluent-bit
     version: v1
@@ -267,10 +289,10 @@ spec:
         kubernetes.io/cluster-service: "true"
     spec:
       containers:
-      - name: fluent-bit
-        image: amazon/aws-for-fluent-bit:2.10.0
-        imagePullPolicy: Always
-        env:
+        - name: fluent-bit
+          image: "{{ .Values.fluentBit.image }}:{{ .Values.fluentBit.tag }}"
+          imagePullPolicy: Always
+          env:
             - name: AWS_REGION
               valueFrom:
                 configMapKeyRef:
@@ -307,56 +329,56 @@ spec:
                   fieldPath: spec.nodeName
             - name: CI_VERSION
               value: "k8s/1.3.3"
-        resources:
+          resources:
             limits:
               memory: 200Mi
             requests:
               cpu: 500m
               memory: 100Mi
-        volumeMounts:
-        # Please don't change below read-only permissions
-        - name: fluentbitstate
-          mountPath: /var/fluent-bit/state
-        - name: varlog
-          mountPath: /var/log
-          readOnly: true
-        - name: varlibdockercontainers
-          mountPath: /var/lib/docker/containers
-          readOnly: true
-        - name: fluent-bit-config
-          mountPath: /fluent-bit/etc/
-        - name: runlogjournal
-          mountPath: /run/log/journal
-          readOnly: true
-        - name: dmesg
-          mountPath: /var/log/dmesg
-          readOnly: true
+          volumeMounts:
+            # Please don't change below read-only permissions
+            - name: fluentbitstate
+              mountPath: /var/fluent-bit/state
+            - name: varlog
+              mountPath: /var/log
+              readOnly: true
+            - name: varlibdockercontainers
+              mountPath: /var/lib/docker/containers
+              readOnly: true
+            - name: fluent-bit-config
+              mountPath: /fluent-bit/etc/
+            - name: runlogjournal
+              mountPath: /run/log/journal
+              readOnly: true
+            - name: dmesg
+              mountPath: /var/log/dmesg
+              readOnly: true
       terminationGracePeriodSeconds: 10
       volumes:
-      - name: fluentbitstate
-        hostPath:
-          path: /var/fluent-bit/state
-      - name: varlog
-        hostPath:
-          path: /var/log
-      - name: varlibdockercontainers
-        hostPath:
-          path: /var/lib/docker/containers
-      - name: fluent-bit-config
-        configMap:
-          name: fluent-bit-config
-      - name: runlogjournal
-        hostPath:
-          path: /run/log/journal
-      - name: dmesg
-        hostPath:
-          path: /var/log/dmesg
+        - name: fluentbitstate
+          hostPath:
+            path: /var/fluent-bit/state
+        - name: varlog
+          hostPath:
+            path: /var/log
+        - name: varlibdockercontainers
+          hostPath:
+            path: /var/lib/docker/containers
+        - name: fluent-bit-config
+          configMap:
+            name: fluent-bit-config
+        - name: runlogjournal
+          hostPath:
+            path: /run/log/journal
+        - name: dmesg
+          hostPath:
+            path: /var/log/dmesg
       serviceAccountName: fluent-bit
       tolerations:
-      - key: node-role.kubernetes.io/master
-        operator: Exists
-        effect: NoSchedule
-      - operator: "Exists"
-        effect: "NoExecute"
-      - operator: "Exists"
-        effect: "NoSchedule"
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+        - operator: "Exists"
+          effect: "NoExecute"
+        - operator: "Exists"
+          effect: "NoSchedule"
