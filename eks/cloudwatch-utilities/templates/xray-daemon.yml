@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: xray-daemon
+  name: xray-daemon
+  namespace: default
+  annotations:
+    eks.amazonaws.com/role-arn: {{ .Values.clusterWorkerRoleARN }}
+
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: xray-daemon
+spec:
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: xray-daemon
+  template:
+    metadata:
+      labels:
+        app: xray-daemon
+    spec:
+      volumes:
+        - name: config-volume
+          configMap:
+            name: "xray-config"
+      containers:
+        - name: xray-daemon
+          image: "{{ .Values.xrayDaemon.image }}:{{ .Values.xrayDaemon.tag }}"
+          command: ["/usr/bin/xray", "-c", "/aws/xray/config.yaml"]
+          resources:
+            requests:
+              cpu: 256m
+              memory: 32Mi
+            limits:
+              cpu: 512m
+              memory: 64Mi
+          ports:
+            - name: xray-ingest
+              containerPort: 2000
+              hostPort: 2000
+              protocol: UDP
+            - name: xray-tcp
+              containerPort: 2000
+              hostPort: 2000
+              protocol: TCP
+          volumeMounts:
+            - name: config-volume
+              mountPath: /aws/xray
+              readOnly: true
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: xray-config
+data:
+  config.yaml: |-
+    TotalBufferSizeMB: 24
+    Socket:
+      UDPAddress: "0.0.0.0:2000"
+      TCPAddress: "127.0.0.1:2000"
+    Version: 2
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: xray-service
+spec:
+  selector:
+    app: xray-daemon
+  clusterIP: None
+  ports:
+    - name: udp-in
+      port: 2000
+      protocol: UDP
+    - name: tcp-in
+      port: 2000
+      protocol: TCP

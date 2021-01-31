@@ -33,6 +33,11 @@ resource "helm_release" "cloudwatch_utilities" {
   }
 
   set {
+    name = "clusterWorkerRoleARN"
+    value = module.eks_cluster.worker_iam_role_arn
+  }
+
+  set {
     name  = "namespace"
     value = local.cloudwatch_namespace
   }

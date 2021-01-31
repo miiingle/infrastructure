@@ -1,5 +1,6 @@
-clusterName: "miiingle-dev-eks"
+clusterName: "<please provide a value for the cluster name>"
 clusterRegion: "us-east-1"
+clusterWorkerRoleARN: "<please provide a value for the cluster role ARN>"
 
 namespace: "amazon-cloudwatch"
 
@@ -10,3 +11,7 @@ fluentBit:
 cloudwatchAgent:
   image: "amazon/cloudwatch-agent"
   tag: "1.247347.3b250378"
+
+xrayDaemon:
+  image: "startupbuilder/xray-daemon"
+  tag: "latest"
