@@ -3,7 +3,7 @@
 
 resource "kubernetes_service_account" "cloudwatch_agent" {
   metadata {
-    name = "cloudwatch-agent"
+    name      = "cloudwatch-agent"
     namespace = local.cloudwatch_namespace
   }
 

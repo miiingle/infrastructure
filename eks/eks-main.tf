@@ -1,17 +1,3 @@
-provider "kubernetes" {
-  host                   = data.aws_eks_cluster.cluster.endpoint
-  token                  = data.aws_eks_cluster_auth.cluster.token
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-}
-
-data "aws_eks_cluster" "cluster" {
-  name = module.eks_cluster.cluster_id
-}
-
-data "aws_eks_cluster_auth" "cluster" {
-  name = module.eks_cluster.cluster_id
-}
-
 module "eks_cluster" {
   source           = "terraform-aws-modules/eks/aws"
   cluster_name     = var.eks_cluster_name
@@ -103,14 +89,4 @@ module "eks_cluster" {
   cluster_create_security_group = false
 
   tags = var.common_tags
-}
-
-resource "aws_iam_role_policy_attachment" "cluster_AWSXRayDaemonWriteAccess" {
-  policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
-  role       = module.eks_cluster.worker_iam_role_name
-}
-
-resource "aws_iam_role_policy_attachment" "cluster_AutoScalingFullAccess" {
-  policy_arn = "arn:aws:iam::aws:policy/AutoScalingFullAccess"
-  role       = module.eks_cluster.worker_iam_role_name
 }
