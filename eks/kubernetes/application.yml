@@ -20,7 +20,7 @@ spec:
 #        imagePullPolicy: Always
       - name: zipkin
         image: openzipkin/zipkin-aws:latest
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         env:
           - name: STORAGE_TYPE
             value: xray
@@ -34,7 +34,7 @@ spec:
           protocol: TCP
       - name: application
         image: startupbuilder/miiingle-net-user-api:latest
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         env:
           - name: DATASOURCES_DEFAULT_URL
             valueFrom:
