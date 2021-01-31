@@ -15,6 +15,14 @@ spec:
         app: miiingle
     spec:
       containers:
+      - name: zipkin
+        image: openzipkin/zipkin-aws:latest
+        imagePullPolicy: Always
+        env:
+          - name: STORAGE_TYPE
+            value: xray
+          - name: AWS_XRAY_DAEMON_ADDRESS
+            value: "xray-service.default:2000"
       - name: miiingle-net-user-api
         image: startupbuilder/miiingle-net-user-api:latest
         imagePullPolicy: Always
