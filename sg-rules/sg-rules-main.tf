@@ -1,4 +1,4 @@
-resource "aws_security_group_rule" "eks_worker_to_" {
+resource "aws_security_group_rule" "eks_worker_to_rds" {
   description              = "Worker nodes access to RDS"
   from_port                = var.rds_instance_port
   to_port                  = var.rds_instance_port

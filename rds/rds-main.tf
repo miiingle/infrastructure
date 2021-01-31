@@ -4,6 +4,7 @@ resource "aws_db_instance" "db_transaction" {
   allocated_storage     = 50
   max_allocated_storage = 1000
   identifier            = "${var.org}-${var.env}-rds-${random_pet.rds_instance_name.id}"
+  name                  = var.db_name
   username              = random_string.rds_username.result
   password              = random_password.rds_password.result
 
