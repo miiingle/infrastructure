@@ -15,6 +15,9 @@ spec:
         app: miiingle
     spec:
       containers:
+#      - name: zipkin
+#        image: openzipkin/zipkin:latest
+#        imagePullPolicy: Always
       - name: zipkin
         image: openzipkin/zipkin-aws:latest
         imagePullPolicy: Always
@@ -23,7 +26,13 @@ spec:
             value: xray
           - name: AWS_XRAY_DAEMON_ADDRESS
             value: "xray-service.default:2000"
-      - name: miiingle-net-user-api
+          - name: LOGGING_LEVEL_ZIPKIN
+            value: DEBUG
+        ports:
+        - name: http
+          containerPort: 9411
+          protocol: TCP
+      - name: application
         image: startupbuilder/miiingle-net-user-api:latest
         imagePullPolicy: Always
         env:
