@@ -26,7 +26,7 @@ resource "aws_db_proxy_default_target_group" "db_transaction_proxy_target_group"
   connection_pool_config {
     init_query                   = "select 1"
     connection_borrow_timeout    = 120
-    max_connections_percent      = 80
+    max_connections_percent      = 100
     max_idle_connections_percent = 50
   }
 }

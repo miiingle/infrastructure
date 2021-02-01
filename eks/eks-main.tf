@@ -63,25 +63,6 @@ module "eks_cluster" {
       additional_tags = merge({
         Name = "${var.org}-${var.env}-eks-worker-spot-main"
       }, var.common_tags)
-    },
-
-    {
-      name = "${var.org}-${var.env}-eks-worker-spot-backup"
-
-      k8s_labels = {
-        Environment = var.env
-        Type        = "standard"
-      }
-
-      spot_price          = "0.20"
-      instance_type       = var.eks_worker_instance_type
-      asg_max_size        = 20
-      kubelet_extra_args  = "--node-labels=node.kubernetes.io/lifecycle=spot"
-      suspended_processes = ["AZRebalance"]
-
-      additional_tags = merge({
-        Name = "${var.org}-${var.env}-eks-worker-spot-backup"
-      }, var.common_tags)
     }
   ]
 

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: miiingle
 spec:
-  replicas: 5
+  replicas: 28
   selector:
     matchLabels:
       app: miiingle
@@ -51,6 +51,8 @@ spec:
               secretKeyRef:
                 key: rds_password
                 name: miiingle.dev.secrets
+          - name: DATASOURCES_DEFAULT_MAXIMUM_POOL_SIZE
+            value: "2"
         ports:
         - name: http
           containerPort: 8080

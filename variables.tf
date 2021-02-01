@@ -74,13 +74,13 @@ variable "eks_manage_aws_auth" {
 
 variable "eks_worker_instance_type" {
   type    = string
-  default = "t3.medium"
+  default = "t3.small"
 }
 
 # RDS
 variable "rds_instance_type" {
   type    = string
-  default = "db.t3.micro"
+  default = "db.r5.large"
 }
 
 variable "rds_instance_port" {
