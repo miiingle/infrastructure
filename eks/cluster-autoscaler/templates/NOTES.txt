@@ -1,0 +1,1 @@
+You have successfully installed cluster-autoscaler on the cluster: {{ .Values.clusterName }}
