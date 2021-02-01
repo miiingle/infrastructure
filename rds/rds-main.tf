@@ -15,6 +15,8 @@ resource "aws_db_instance" "db_transaction" {
   vpc_security_group_ids = [aws_security_group.db_transaction.id]
   db_subnet_group_name   = aws_db_subnet_group.transaction_db.name
 
+  performance_insights_enabled = true
+
   final_snapshot_identifier = "${var.org}-${var.env}-rds-${random_pet.rds_instance_name.id}-final-snapshot-${formatdate("YYYYMMDDHHmm", timestamp())}"
   deletion_protection       = false
 
