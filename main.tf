@@ -68,3 +68,13 @@ module "sg_rules" {
   eks_worker_sg_id   = module.eks.worker_sg_id
   rds_instance_sg_id = module.rds.instance_sg_id
 }
+
+module "cloudwatch" {
+  source = "./cloudwatch"
+  org           = var.org
+  env           = var.env
+  common_tags   = var.common_tags
+
+  application_log_group = "/aws/containerinsights/${var.eks_cluster_name}/application"
+  api_gateway_log_group = module.api_gateway.api_logs
+}
