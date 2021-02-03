@@ -70,10 +70,11 @@ module "sg_rules" {
 }
 
 module "cloudwatch" {
-  source = "./cloudwatch"
-  org           = var.org
-  env           = var.env
-  common_tags   = var.common_tags
+  source      = "./cloudwatch"
+  org         = var.org
+  env         = var.env
+  common_tags = var.common_tags
+  region      = var.aws_region
 
   application_log_group = "/aws/containerinsights/${var.eks_cluster_name}/application"
   api_gateway_log_group = module.api_gateway.api_logs

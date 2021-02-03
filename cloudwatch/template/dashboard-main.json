@@ -1,0 +1,50 @@
+{
+  "widgets": [
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 0,
+      "width": 6,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "${metric_namespace}", "${error_4xx_name}", { "color": "#ff7f0e", "label": "Client Errors" } ],
+          [ ".", "${error_5xx_name}", { "color": "#d62728", "label": "Server Errors" } ],
+          [ ".", "${ok_2xx_name}", { "label": "OK" } ]
+        ],
+        "view": "pie",
+        "region": "${region}",
+        "title": "HTTP Response",
+        "stat": "Sum",
+        "period": 3600,
+        "labels": {
+          "visible": true
+        },
+        "legend": {
+          "position": "right"
+        },
+        "setPeriodToTimeRange": false
+      }
+    },
+    {
+      "type": "metric",
+      "x": 6,
+      "y": 0,
+      "width": 18,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "${metric_namespace}", "${error_4xx_name}", { "color": "#ff7f0e", "label": "Error 4xx" } ],
+          [ ".", "${error_5xx_name}", { "color": "#d62728", "label": "Error 5xx" } ],
+          [ ".", "${ok_2xx_name}", { "label": "OK" } ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${region}",
+        "stat": "Sum",
+        "period": 10,
+        "title": "HTTP Status"
+      }
+    }
+  ]
+}
