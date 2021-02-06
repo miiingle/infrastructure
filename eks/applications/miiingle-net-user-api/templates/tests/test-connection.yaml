@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "miiingle-net-user-api.fullname" . }}-test-connection"
+  labels:
+    {{- include "miiingle-net-user-api.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "miiingle-net-user-api.fullname" . }}:{{ .Values.service.port }}/health']
+  restartPolicy: Never
