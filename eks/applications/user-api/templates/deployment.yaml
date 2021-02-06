@@ -24,7 +24,7 @@ spec:
               value: xray
             - name: AWS_XRAY_DAEMON_ADDRESS
               value: "xray-service.default:2000"
-            - name: LOGGING_LEVEL_ZIPKIN
+            - name: LOGGING_LEVEL_ROOT
               value: DEBUG
           ports:
             - name: http
@@ -32,11 +32,11 @@ spec:
               protocol: TCP
           resources:
             requests:
-              memory: "256Mi"
+              memory: "128Mi"
               cpu: "100m"
             limits:
-              memory: "512Mi"
-              cpu: "200m"
+              memory: "128Mi"
+              cpu: "100m"
         - name: application
           image: startupbuilder/miiingle-net-user-api:latest
           imagePullPolicy: IfNotPresent
@@ -64,11 +64,11 @@ spec:
               protocol: TCP
           resources:
             requests:
-              memory: "32Mi"
-              cpu: "200m"
+              memory: "256Mi"
+              cpu: "100m"
             limits:
-              memory: "64Mi"
-              cpu: "400m"
+              memory: "256Mi"
+              cpu: "100m"
           livenessProbe:
             failureThreshold: 6
             successThreshold: 1
