@@ -1,0 +1,6 @@
+apiVersion: v2
+name: user-api
+description: Backend for regular users on the mobile app
+type: application
+version: 1.0.0
+appVersion: "1.0.0"

@@ -1,0 +1,3 @@
+Deployed Miiingle.NET User API
+
+Version: {{ .Values.image.tag }}

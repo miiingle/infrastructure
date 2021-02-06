@@ -5,7 +5,7 @@ metadata:
   labels:
     app: miiingle
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: miiingle
@@ -15,9 +15,6 @@ spec:
         app: miiingle
     spec:
       containers:
-#      - name: zipkin
-#        image: openzipkin/zipkin:latest
-#        imagePullPolicy: Always
       - name: zipkin
         image: openzipkin/zipkin-aws:latest
         imagePullPolicy: IfNotPresent
@@ -32,6 +29,13 @@ spec:
         - name: http
           containerPort: 9411
           protocol: TCP
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "100m"
+          limits:
+            memory: "1024Mi"
+            cpu: "100m"
       - name: application
         image: startupbuilder/miiingle-net-user-api:latest
         imagePullPolicy: IfNotPresent
@@ -57,6 +61,13 @@ spec:
         - name: http
           containerPort: 8080
           protocol: TCP
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "100m"
+          limits:
+            memory: "1024Mi"
+            cpu: "100m"
         livenessProbe:
           failureThreshold: 6
           successThreshold: 1
@@ -73,3 +84,21 @@ spec:
           httpGet:
             path: /health
             port: 8080
+
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: miiingle-user-api
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: miiingle-user-api
+  minReplicas: 1
+  maxReplicas: 100
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 70

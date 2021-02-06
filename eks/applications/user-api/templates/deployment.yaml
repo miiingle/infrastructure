@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-api
+  labels:
+    app: miiingle
+    {{- include "user-api.labels" . | nindent 4 }}
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: miiingle
+  template:
+    metadata:
+      labels:
+        app: miiingle
+    spec:
+      containers:
+        - name: zipkin
+          image: openzipkin/zipkin-aws:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: STORAGE_TYPE
+              value: xray
+            - name: AWS_XRAY_DAEMON_ADDRESS
+              value: "xray-service.default:2000"
+            - name: LOGGING_LEVEL_ZIPKIN
+              value: DEBUG
+          ports:
+            - name: http
+              containerPort: 9411
+              protocol: TCP
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "200m"
+        - name: application
+          image: startupbuilder/miiingle-net-user-api:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DATASOURCES_DEFAULT_URL
+              valueFrom:
+                secretKeyRef:
+                  key: rds_url
+                  name: miiingle.dev.secrets
+            - name: DATASOURCES_DEFAULT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: rds_username
+                  name: miiingle.dev.secrets
+            - name: DATASOURCES_DEFAULT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: rds_password
+                  name: miiingle.dev.secrets
+            - name: DATASOURCES_DEFAULT_MAXIMUM_POOL_SIZE
+              value: "2"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "200m"
+          livenessProbe:
+            failureThreshold: 6
+            successThreshold: 1
+            periodSeconds: 30
+            timeoutSeconds: 30
+            httpGet:
+              path: /health
+              port: 8080
+          readinessProbe:
+            failureThreshold: 1
+            successThreshold: 1
+            periodSeconds: 10
+            timeoutSeconds: 5
+            httpGet:
+              path: /health
+              port: 8080
