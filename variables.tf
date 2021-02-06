@@ -74,7 +74,7 @@ variable "eks_manage_aws_auth" {
 
 variable "eks_worker_instance_type" {
   type    = string
-  default = "t3.small"
+  default = "m5.large"
 }
 
 # RDS
