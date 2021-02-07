@@ -14,3 +14,6 @@ resource "helm_release" "application_user_api" {
     module.eks_cluster.config_map_aws_auth
   ]
 }
+//TODO: parameterize a lot of things:
+//secrets
+//resource+scaling

@@ -44,10 +44,10 @@ spec:
           resources:
             requests:
               memory: "256Mi"
-              cpu: "100m"
+              cpu: "250m"
             limits:
               memory: "256Mi"
-              cpu: "100m"
+              cpu: "500m"
           livenessProbe:
             failureThreshold: 6
             successThreshold: 1

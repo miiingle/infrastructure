@@ -46,7 +46,7 @@ module "eks_cluster" {
     {
       name           = "${var.org}-${var.env}-eks-worker-spot"
       capacity_type  = "SPOT"
-      instance_types = ["c5.xlarge"]
+      instance_types = ["c5.2xlarge"]
       max_capacity   = 5
 
       additional_tags = merge({
