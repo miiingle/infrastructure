@@ -16,8 +16,7 @@ resource "kubernetes_namespace" "cloudwatch" {
   ]
 }
 
-//TODO: VPC Endpoint for Xray
-//TODO: figure out why zipkin is not reporting to xray, might need to check the code
+//TODO: VPC Endpoint for Xray (wait till they implement it)
 resource "helm_release" "cloudwatch_utilities" {
   provider        = helm.this_cluster
   name            = "cloudwatch-utilities"

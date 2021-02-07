@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: zipkin-daemon
+spec:
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: zipkin-daemon
+  template:
+    metadata:
+      labels:
+        app: zipkin-daemon
+    spec:
+      containers:
+        - name: zipkin
+          image: openzipkin/zipkin-aws:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: STORAGE_TYPE
+              value: xray
+            - name: AWS_XRAY_DAEMON_ADDRESS
+              value: "xray-service.default:2000"
+          ports:
+            - name: http
+              containerPort: 9411
+              protocol: TCP
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "100m"
+            limits:
+              memory: "1024Mi"
+              cpu: "100m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zipkin-service
+spec:
+  selector:
+    app: zipkin-daemon
+  clusterIP: None
+  ports:
+    - name: http
+      port: 9411
+      protocol: TCP

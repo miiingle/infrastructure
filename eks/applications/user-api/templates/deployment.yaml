@@ -16,27 +16,6 @@ spec:
         app: miiingle
     spec:
       containers:
-        - name: zipkin
-          image: openzipkin/zipkin-aws:latest
-          imagePullPolicy: IfNotPresent
-          env:
-            - name: STORAGE_TYPE
-              value: xray
-            - name: AWS_XRAY_DAEMON_ADDRESS
-              value: "xray-service.default:2000"
-            - name: LOGGING_LEVEL_ROOT
-              value: DEBUG
-          ports:
-            - name: http
-              containerPort: 9411
-              protocol: TCP
-          resources:
-            requests:
-              memory: "128Mi"
-              cpu: "100m"
-            limits:
-              memory: "128Mi"
-              cpu: "100m"
         - name: application
           image: startupbuilder/miiingle-net-user-api:latest
           imagePullPolicy: IfNotPresent
@@ -56,8 +35,8 @@ spec:
                 secretKeyRef:
                   key: rds_password
                   name: miiingle.dev.secrets
-            - name: DATASOURCES_DEFAULT_MAXIMUM_POOL_SIZE
-              value: "2"
+            - name: TRACING_ZIPKIN_HTTP_URL
+              value: "http://zipkin-service.default:9411"
           ports:
             - name: http
               containerPort: 8080
