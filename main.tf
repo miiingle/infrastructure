@@ -14,16 +14,15 @@ module "vpc" {
 }
 
 module "eks" {
-  source                   = "./eks"
-  aws_region               = var.aws_region
-  org                      = var.org
-  env                      = var.env
-  common_tags              = var.common_tags
-  eks_cluster_version      = var.eks_cluster_version
-  eks_cluster_name         = var.eks_cluster_name
-  eks_iam_mapping          = var.eks_iam_mapping
-  eks_worker_instance_type = var.eks_worker_instance_type
-  manage_aws_auth          = var.eks_manage_aws_auth
+  source              = "./eks"
+  aws_region          = var.aws_region
+  org                 = var.org
+  env                 = var.env
+  common_tags         = var.common_tags
+  eks_cluster_version = var.eks_cluster_version
+  eks_cluster_name    = var.eks_cluster_name
+  eks_iam_mapping     = var.eks_iam_mapping
+  manage_aws_auth     = var.eks_manage_aws_auth
 
   current_account_id = data.aws_caller_identity.current.account_id
   vpc_id             = module.vpc.vpc_id

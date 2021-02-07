@@ -26,20 +26,17 @@ module "eks_cluster" {
     }
   ]
 
-  //TODO: use node_groups_defaults for common params
+  node_groups_defaults = {
+    desired_capacity = 1
+    min_capacity     = 1
+  }
+
   node_groups = [
     {
-      name = "${var.org}-${var.env}-eks-worker-on-demand"
-
-      k8s_labels = {
-        Environment = var.env
-        Type        = "standard"
-      }
-
-      instance_type       = var.eks_worker_instance_type
-      asg_max_size        = 1
-      kubelet_extra_args  = "--node-labels=node.kubernetes.io/lifecycle=normal"
-      suspended_processes = ["AZRebalance"]
+      name           = "${var.org}-${var.env}-eks-worker-on-demand"
+      capacity_type  = "ON_DEMAND"
+      instance_types = ["c5.xlarge"]
+      max_capacity   = 1
 
       additional_tags = merge({
         Name = "${var.org}-${var.env}-eks-worker-on-demand"
@@ -47,21 +44,13 @@ module "eks_cluster" {
     },
 
     {
-      name = "${var.org}-${var.env}-eks-worker-spot-main"
-
-      k8s_labels = {
-        Environment = var.env
-        Type        = "standard"
-      }
-
-      spot_price          = "0.199"
-      instance_type       = var.eks_worker_instance_type
-      asg_max_size        = 20
-      kubelet_extra_args  = "--node-labels=node.kubernetes.io/lifecycle=spot"
-      suspended_processes = ["AZRebalance"]
+      name           = "${var.org}-${var.env}-eks-worker-spot"
+      capacity_type  = "SPOT"
+      instance_types = ["c5.xlarge"]
+      max_capacity   = 5
 
       additional_tags = merge({
-        Name = "${var.org}-${var.env}-eks-worker-spot-main"
+        Name = "${var.org}-${var.env}-eks-worker-spot"
       }, var.common_tags)
     }
   ]
