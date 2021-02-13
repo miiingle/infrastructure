@@ -68,8 +68,8 @@ module "sg_rules" {
   rds_instance_sg_id = module.rds.instance_sg_id
 }
 
-module "cloudwatch" {
-  source      = "./cloudwatch"
+module "operations" {
+  source      = "./ops"
   org         = var.org
   env         = var.env
   common_tags = var.common_tags

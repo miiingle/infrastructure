@@ -4,12 +4,11 @@ resource "aws_iam_role_policy_attachment" "cluster_CloudWatchAgentServerPolicy" 
   role       = module.eks_cluster.worker_iam_role_name
 }
 
-//TODO: change this to a more restrictive role
-//for now i just want to write the server logs to CW
-resource "aws_iam_role_policy_attachment" "cluster_CloudWatchFullAccess" {
-  policy_arn = "arn:aws:iam::aws:policy/CloudWatchFullAccess"
-  role       = module.eks_cluster.worker_iam_role_name
-}
+//TODO: we probably only need the agent policy, not this
+//resource "aws_iam_role_policy_attachment" "cluster_CloudWatchFullAccess" {
+//  policy_arn = "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+//  role       = module.eks_cluster.worker_iam_role_name
+//}
 
 resource "aws_iam_role_policy_attachment" "cluster_AWSXRayDaemonWriteAccess" {
   policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
