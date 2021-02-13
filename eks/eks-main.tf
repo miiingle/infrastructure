@@ -20,32 +20,34 @@ module "eks_cluster" {
     min_capacity     = 1
   }
 
-  node_groups = [
-    {
-      name           = "${var.org}-${var.env}-eks-worker-on-demand"
-      capacity_type  = "ON_DEMAND"
-      instance_types = ["c5.xlarge"]
-      max_capacity   = 1
-
-      additional_tags = merge({
-        Name = "${var.org}-${var.env}-eks-worker-on-demand"
-      }, var.common_tags)
-    },
-
-    {
-      name           = "${var.org}-${var.env}-eks-worker-spot"
-      capacity_type  = "SPOT"
-      instance_types = ["c5.2xlarge"]
-      max_capacity   = 5
-
-      additional_tags = merge({
-        Name = "${var.org}-${var.env}-eks-worker-spot"
-      }, var.common_tags)
-    }
-  ]
+  node_groups = [local.on_demand_cluster, local.spot_cluster]
 
   worker_create_security_group  = false
   cluster_create_security_group = false
 
   tags = var.common_tags
+}
+
+locals {
+  on_demand_cluster = {
+    name           = "${var.org}-${var.env}-eks-worker-on-demand"
+    capacity_type  = "ON_DEMAND"
+    instance_types = ["c5.xlarge"]
+    max_capacity   = 1
+
+    additional_tags = merge({
+      Name = "${var.org}-${var.env}-eks-worker-on-demand"
+    }, var.common_tags)
+  }
+
+  spot_cluster = {
+    name           = "${var.org}-${var.env}-eks-worker-spot"
+    capacity_type  = "SPOT"
+    instance_types = ["c5.2xlarge"]
+    max_capacity   = 5
+
+    additional_tags = merge({
+      Name = "${var.org}-${var.env}-eks-worker-spot"
+    }, var.common_tags)
+  }
 }

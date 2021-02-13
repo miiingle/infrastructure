@@ -24,8 +24,8 @@ module "eks" {
   eks_cluster_name    = var.eks_cluster_name
   eks_cluster_version = var.eks_cluster_version
 
-  vpc_id             = module.network.vpc_id
-  private_subnets    = module.network.private_subnets
+  vpc_id          = module.network.vpc_id
+  private_subnets = module.network.private_subnets
   secrets = {
     rds_url      = "jdbc:postgresql://${module.rds.host}:5432/postgres?currentSchema=public"
     rds_username = module.rds.master_username
