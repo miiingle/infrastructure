@@ -5,4 +5,3 @@ Infrastructure setup scripts mainly written in Terraform
 ```
 terraform graph | dot -Tsvg > docs/graph.svg
 ```
-![Graph](docs/graph.svg)
