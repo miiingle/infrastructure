@@ -47,7 +47,7 @@ module "api_gateway" {
 }
 
 module "rds" {
-  source        = "./rds"
+  source        = "./databases/rds"
   org           = var.org
   env           = var.env
   common_tags   = var.common_tags
@@ -67,4 +67,5 @@ module "operations" {
 
   application_log_group = "/aws/containerinsights/${var.eks_cluster_name}/application"
   api_gateway_log_group = module.api_gateway.api_logs
+  rds_instance_id       = module.rds.instance_id
 }

@@ -32,7 +32,7 @@ resource "aws_route53_record" "api_gateway_ssl_cert_validation" {
 
 //step 2: add the domain to api gateway
 resource "aws_apigatewayv2_domain_name" "api_gateway" {
-  depends_on = [aws_acm_certificate.api_gateway_ssl]
+  depends_on = [aws_route53_record.api_gateway_ssl_cert_validation]
   count      = var.domain_root == "" ? 0 : 1
 
   domain_name = aws_acm_certificate.api_gateway_ssl[0].domain_name

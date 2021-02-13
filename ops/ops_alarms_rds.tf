@@ -1,6 +1,6 @@
 
 resource "aws_cloudwatch_metric_alarm" "free_storage_space_too_low" {
-  alarm_name          = "${aws_db_instance.db_transaction.identifier}_free_storage_space_threshold"
+  alarm_name          = "${var.org}_${var.env}_rds_free_storage_space_threshold"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "FreeStorageSpace"
@@ -11,12 +11,12 @@ resource "aws_cloudwatch_metric_alarm" "free_storage_space_too_low" {
   alarm_description   = "Average database free storage space over last 10 minutes too low"
 
   dimensions = {
-    DBInstanceIdentifier = aws_db_instance.db_transaction.id
+    DBInstanceIdentifier = var.rds_instance_id
   }
 }
 
 resource "aws_cloudwatch_metric_alarm" "connection_usage_too_high" {
-  alarm_name          = "${aws_db_instance.db_transaction.identifier}_connection_usage_too_high"
+  alarm_name          = "${var.org}_${var.env}_rds_connection_usage_too_high"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "DatabaseConnections"
@@ -27,6 +27,6 @@ resource "aws_cloudwatch_metric_alarm" "connection_usage_too_high" {
   alarm_description   = "Average database connection usage over last 10 minutes too high, performance may suffer"
 
   dimensions = {
-    DBInstanceIdentifier = aws_db_instance.db_transaction.id
+    DBInstanceIdentifier = var.rds_instance_id
   }
 }

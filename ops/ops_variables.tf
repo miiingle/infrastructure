@@ -5,3 +5,5 @@ variable "region" {}
 
 variable "application_log_group" {}
 variable "api_gateway_log_group" {}
+
+variable "rds_instance_id" {}
