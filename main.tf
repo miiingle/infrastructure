@@ -66,6 +66,8 @@ module "operations" {
   region      = var.aws_region
 
   application_log_group = "/aws/containerinsights/${var.eks_cluster_name}/application"
+  api_gateway_name      = module.api_gateway.api_name
+  api_gateway_stage     = module.api_gateway.api_stage
   api_gateway_log_group = module.api_gateway.api_logs
   rds_instance_id       = module.rds.instance_id
 }
