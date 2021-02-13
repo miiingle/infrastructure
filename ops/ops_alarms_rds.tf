@@ -1,6 +1,6 @@
 
 resource "aws_cloudwatch_metric_alarm" "free_storage_space_too_low" {
-  alarm_name          = "${var.org}_${var.env}_rds_free_storage_space_threshold"
+  alarm_name          = "${local.alarm_namespace} RDS Low Storage"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "FreeStorageSpace"
@@ -16,7 +16,7 @@ resource "aws_cloudwatch_metric_alarm" "free_storage_space_too_low" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "connection_usage_too_high" {
-  alarm_name          = "${var.org}_${var.env}_rds_connection_usage_too_high"
+  alarm_name          = "${local.alarm_namespace} RDS Connection Too High"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "DatabaseConnections"

@@ -11,3 +11,7 @@ variable "api_gateway_stage" {}
 
 variable "rds_instance_id" {}
 
+locals {
+  alarm_namespace = upper("${var.org}_${var.env} /")
+}
+

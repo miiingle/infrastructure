@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "api_error_5xx" {
-  alarm_name                = "${var.org}_${var.env}_api_error_5xx_high"
+  alarm_name                = "${local.alarm_namespace} API 5xx Rate Too High"
   alarm_description         = "Error 5xx are dangerously high"
   comparison_operator       = "GreaterThanThreshold"
   evaluation_periods        = 5
