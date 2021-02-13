@@ -57,21 +57,6 @@ variable "eks_cluster_version" {
   default = "1.18"
 }
 
-variable "eks_iam_mapping" {
-  type = map(string)
-
-  default = {
-    "ci-user" = "build_pipeline"
-    "dev1"    = "lyndon.bibera@headhuntr.io"
-  }
-}
-
-variable "eks_manage_aws_auth" {
-  description = "Switch this to false before deletion"
-  type        = bool
-  default     = true
-}
-
 # RDS
 variable "rds_instance_type" {
   type    = string

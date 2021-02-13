@@ -5,7 +5,7 @@ module "eks_cluster" {
   vpc_id           = var.vpc_id
   subnets          = var.private_subnets
   write_kubeconfig = false
-  manage_aws_auth  = var.manage_aws_auth
+  manage_aws_auth  = true
 
   cluster_enabled_log_types = [
     "api",
@@ -13,17 +13,6 @@ module "eks_cluster" {
     "authenticator",
     "controllerManager",
     "scheduler"
-  ]
-
-  //TODO: configure separately eks-kubernetes-users.tf
-  map_accounts = [var.current_account_id]
-  map_users = [
-    for user, iam in var.eks_iam_mapping :
-    {
-      userarn  = "arn:aws:iam::${var.current_account_id}:user/${iam}"
-      username = user
-      groups   = ["system:masters"]
-    }
   ]
 
   node_groups_defaults = {
