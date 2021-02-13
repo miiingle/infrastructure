@@ -6,6 +6,9 @@ resource "aws_cloudwatch_metric_alarm" "api_error_5xx" {
   threshold                 = 0.01
   insufficient_data_actions = []
 
+  alarm_actions = [aws_sns_topic.alarms.arn]
+  ok_actions    = [aws_sns_topic.alarms.arn]
+
   treat_missing_data = "notBreaching"
 
   metric_query {

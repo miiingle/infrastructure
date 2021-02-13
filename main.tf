@@ -65,6 +65,8 @@ module "operations" {
   common_tags = var.common_tags
   region      = var.aws_region
 
+  alarm_sms_destination = var.alarm_sms_destination
+
   application_log_group = "/aws/containerinsights/${var.eks_cluster_name}/application"
   api_gateway_name      = module.api_gateway.api_name
   api_gateway_stage     = module.api_gateway.api_stage
