@@ -11,12 +11,12 @@ module "network" {
   eks_cluster_name  = var.eks_cluster_name
   rds_instance_port = var.rds_instance_port
 
-  eks_worker_sg_id   = module.eks.worker_sg_id
+  eks_worker_sg_id   = module.kubernetes.worker_sg_id
   rds_instance_sg_id = module.rds.instance_sg_id
 }
 
-module "eks" {
-  source              = "./eks"
+module "kubernetes" {
+  source              = "./kubernetes"
   aws_region          = var.aws_region
   org                 = var.org
   env                 = var.env
@@ -43,7 +43,7 @@ module "api_gateway" {
 
   vpc_id                  = module.network.vpc_id
   vpc_link_subnets        = module.network.private_subnets
-  backend_lb_listener_arn = module.eks.lb_listener_arn
+  backend_lb_listener_arn = module.kubernetes.lb_listener_arn
 }
 
 module "rds" {

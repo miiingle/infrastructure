@@ -20,7 +20,7 @@ resource "kubernetes_namespace" "cloudwatch" {
 resource "helm_release" "cloudwatch_utilities" {
   provider        = helm.this_cluster
   name            = "cloudwatch-utilities"
-  chart           = "eks/cloudwatch-utilities"
+  chart           = "${path.module}/cloudwatch-utilities"
   cleanup_on_fail = true
 
   set {
