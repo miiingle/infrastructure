@@ -17,7 +17,8 @@ data "aws_s3_bucket" "codebuild_log_bucket" {
 data "template_file" "codebuild_policy" {
   template = file("${path.module}/template/codebuild_policy.json")
   vars = {
-    aws_s3_bucket_arn = data.aws_s3_bucket.codebuild_log_bucket.arn
+    aws_s3_bucket_arn       = data.aws_s3_bucket.codebuild_log_bucket.arn
+    user_api_codecommit_arn = aws_codecommit_repository.user_api_repository.arn
   }
 }
 
