@@ -17,6 +17,7 @@ resource "aws_codebuild_project" "user_api" {
     image                       = "aws/codebuild/standard:5.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
+    privileged_mode             = true
   }
 
   artifacts {
