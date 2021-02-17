@@ -5,7 +5,7 @@ resource "aws_apigatewayv2_api" "main" {
   tags          = var.common_tags
 
   cors_configuration {
-    allow_origins     = ["*"]
+    allow_origins     = var.cors_allow_origins
     allow_credentials = false
     allow_headers     = ["*"]
     allow_methods     = ["*"]
@@ -30,25 +30,18 @@ resource "aws_apigatewayv2_integration" "backend_application" {
   integration_uri    = var.backend_lb_listener_arn
 }
 
-resource "aws_apigatewayv2_route" "backend_application" {
-  api_id         = aws_apigatewayv2_api.main.id
-  route_key      = "OPTIONS /{proxy+}"
-  operation_name = "CORS Pre-flight"
-  target         = "integrations/${aws_apigatewayv2_integration.backend_application.id}"
-}
-
 resource "aws_apigatewayv2_route" "eks_internal_http_methods" {
   count          = length(var.http_methods)
   api_id         = aws_apigatewayv2_api.main.id
   route_key      = "${var.http_methods[count.index]} /{proxy+}"
   operation_name = "${var.http_methods[count.index]} Resource"
-  target         = aws_apigatewayv2_route.backend_application.target
+  target         = "integrations/${aws_apigatewayv2_integration.backend_application.id}"
 }
 
-resource "aws_apigatewayv2_stage" "prod" {
+resource "aws_apigatewayv2_stage" "default" {
   api_id      = aws_apigatewayv2_api.main.id
   name        = "$default"
-  description = "Production API"
+  description = "Default"
   auto_deploy = true
 
   access_log_settings {

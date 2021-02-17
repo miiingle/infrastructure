@@ -51,7 +51,7 @@ resource "aws_apigatewayv2_api_mapping" "api_gateway" {
 
   domain_name = aws_apigatewayv2_domain_name.api_gateway[0].id
   api_id      = aws_apigatewayv2_api.main.id
-  stage       = aws_apigatewayv2_stage.prod.id
+  stage       = aws_apigatewayv2_stage.default.id
 }
 
 //step 4: add the record using route53

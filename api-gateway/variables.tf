@@ -22,3 +22,7 @@ variable "domain_prefix" {
   type        = string
   default     = "api"
 }
+
+variable "cors_allow_origins" {
+  default = ["https://dark-desert-6025.postman.co"]
+}

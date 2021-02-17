@@ -4,7 +4,7 @@ output "api_id" {
 }
 
 output "api_stage" {
-  value = aws_apigatewayv2_stage.prod.id
+  value = aws_apigatewayv2_stage.default.id
 }
 
 output "api_logs" {
