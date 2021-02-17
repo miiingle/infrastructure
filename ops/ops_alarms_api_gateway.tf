@@ -7,7 +7,6 @@ resource "aws_cloudwatch_metric_alarm" "api_error_5xx" {
   insufficient_data_actions = []
 
   alarm_actions = [aws_sns_topic.alarms.arn]
-  ok_actions    = [aws_sns_topic.alarms.arn]
 
   treat_missing_data = "notBreaching"
 
@@ -68,7 +67,6 @@ resource "aws_cloudwatch_metric_alarm" "api_no_requests" {
   insufficient_data_actions = []
 
   alarm_actions = [aws_sns_topic.alarms.arn]
-  ok_actions    = [aws_sns_topic.alarms.arn]
 
   treat_missing_data = "breaching"
 
