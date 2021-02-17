@@ -29,8 +29,8 @@ resource "aws_cloudwatch_metric_alarm" "api_error_5xx" {
       unit        = "Count"
 
       dimensions = {
-        ApiName = var.api_gateway_name
-        Stage   = var.api_gateway_stage
+        ApiId = var.api_gateway_id
+        Stage = var.api_gateway_stage
       }
     }
 
@@ -49,8 +49,8 @@ resource "aws_cloudwatch_metric_alarm" "api_error_5xx" {
       unit        = "Count"
 
       dimensions = {
-        ApiName = var.api_gateway_name
-        Stage   = var.api_gateway_stage
+        ApiId = var.api_gateway_id
+        Stage = var.api_gateway_stage
       }
     }
 
@@ -59,34 +59,22 @@ resource "aws_cloudwatch_metric_alarm" "api_error_5xx" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "api_no_requests" {
-  alarm_name                = "${local.alarm_namespace} No request comming through"
-  alarm_description         = "No API Requests within 30 minutes"
-  comparison_operator       = "LessThanThreshold"
-  evaluation_periods        = 5
-  threshold                 = 1
-  insufficient_data_actions = []
+  alarm_name        = "${local.alarm_namespace} No request coming through"
+  alarm_description = "No API Requests within 30 minutes"
 
-  alarm_actions = [aws_sns_topic.alarms.arn]
-
+  ok_actions         = [aws_sns_topic.alarms.arn]
+  alarm_actions      = [aws_sns_topic.alarms.arn]
   treat_missing_data = "breaching"
 
-  metric_query {
-    id    = "count"
-    label = "Count"
-
-    metric {
-      metric_name = "Count"
-      namespace   = "AWS/ApiGateway"
-      period      = "60"
-      stat        = "Sum"
-      unit        = "Count"
-
-      dimensions = {
-        ApiName = var.api_gateway_name
-        Stage   = var.api_gateway_stage
-      }
-    }
-
-    return_data = true
+  namespace   = "AWS/ApiGateway"
+  metric_name = "Count"
+  dimensions = {
+    "ApiId" = var.api_gateway_id
+    "Stage" = var.api_gateway_stage
   }
+  statistic           = "Sum"
+  period              = 600
+  evaluation_periods  = 3
+  comparison_operator = "LessThanThreshold"
+  threshold           = 1
 }

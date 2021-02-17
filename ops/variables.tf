@@ -7,7 +7,7 @@ variable "alarm_sms_destination" {}
 variable "application_log_group" {}
 
 variable "api_gateway_log_group" {}
-variable "api_gateway_name" {}
+variable "api_gateway_id" {}
 variable "api_gateway_stage" {}
 
 variable "rds_instance_id" {}
