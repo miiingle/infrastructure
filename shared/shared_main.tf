@@ -1,0 +1,4 @@
+
+module "ci" {
+  source = "./ci"
+}
