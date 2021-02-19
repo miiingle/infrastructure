@@ -17,24 +17,24 @@ spec:
     spec:
       containers:
         - name: application
-          image: startupbuilder/miiingle-net-user-api:latest
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: IfNotPresent
           env:
             - name: DATASOURCES_DEFAULT_URL
               valueFrom:
                 secretKeyRef:
                   key: rds_url
-                  name: miiingle.dev.secrets
+                  name: {{ .Values.datasource.secretName }}
             - name: DATASOURCES_DEFAULT_USERNAME
               valueFrom:
                 secretKeyRef:
                   key: rds_username
-                  name: miiingle.dev.secrets
+                  name: {{ .Values.datasource.secretName }}
             - name: DATASOURCES_DEFAULT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: rds_password
-                  name: miiingle.dev.secrets
+                  name: {{ .Values.datasource.secretName }}
             - name: TRACING_ZIPKIN_HTTP_URL
               value: "http://zipkin-service.default:9411"
           ports:
