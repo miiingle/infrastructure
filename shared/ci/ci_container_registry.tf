@@ -5,3 +5,25 @@ resource "aws_ecr_repository" "user_api" {
 resource "aws_ecr_repository" "oracle_graalvm" {
   name = "${var.project_prefix}.oracle_graalvm"
 }
+
+resource "aws_ecr_lifecycle_policy" "user_api_cleanup" {
+  repository = aws_ecr_repository.user_api.name
+
+  policy = jsonencode({
+    rules = [
+      {
+        rulePriority = 1
+        description  = "Expire images older than 14 days"
+        selection = {
+          tagStatus   = "untagged"
+          countType   = "sinceImagePushed"
+          countUnit   = "days"
+          countNumber = 1
+        }
+        action = {
+          type = "expire"
+        }
+      }
+    ]
+  })
+}
