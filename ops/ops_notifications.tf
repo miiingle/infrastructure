@@ -7,4 +7,11 @@ resource "aws_sns_topic_subscription" "sms_alarm" {
   topic_arn = aws_sns_topic.alarms.arn
   protocol  = "sms"
   endpoint  = var.alarm_sms_destination
+
+  delivery_policy = ""
+  filter_policy   = ""
+
+  lifecycle {
+    ignore_changes = [endpoint]
+  }
 }
