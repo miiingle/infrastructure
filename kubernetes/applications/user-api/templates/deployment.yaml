@@ -18,8 +18,12 @@ spec:
       containers:
         - name: application
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           env:
+            - name: JAVA_OPTIONS
+              value: -Xmx512m
+            - name: CLIENT_EMAIL
+              value: logging
             - name: DATASOURCES_DEFAULT_URL
               valueFrom:
                 secretKeyRef:
@@ -43,11 +47,11 @@ spec:
               protocol: TCP
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "250m"
+              memory: "1024Mi"
+              cpu: "1000m"
             limits:
-              memory: "256Mi"
-              cpu: "500m"
+              memory: "1024Mi"
+              cpu: "1000m"
           livenessProbe:
             failureThreshold: 6
             successThreshold: 1

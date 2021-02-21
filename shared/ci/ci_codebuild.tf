@@ -24,6 +24,11 @@ resource "aws_codebuild_project" "user_api" {
     type = "NO_ARTIFACTS"
   }
 
+  cache {
+    type     = "S3"
+    location = "${var.build_cache_bucket}/${var.build_cache_prefix}/user_api"
+  }
+
   logs_config {
     cloudwatch_logs {
       group_name  = aws_cloudwatch_log_group.code_build.name

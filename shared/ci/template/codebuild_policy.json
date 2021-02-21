@@ -58,7 +58,8 @@
       ],
       "Resource": [
         "${aws_s3_bucket_arn}",
-        "${aws_s3_bucket_arn}/*"
+        "${aws_s3_bucket_arn}/*",
+        "${aws_s3_cache_bucket_arn}/${aws_s3_cache_bucket_prefix}/*"
       ]
     }
   ]

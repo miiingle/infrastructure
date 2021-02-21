@@ -16,7 +16,7 @@ resource "helm_release" "application_user_api" {
 
   set {
     name = "image.tag"
-    value = "latest"
+    value = "latest-native"
   }
 
   depends_on = [
