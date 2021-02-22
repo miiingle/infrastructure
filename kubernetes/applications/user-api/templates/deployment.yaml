@@ -6,7 +6,7 @@ metadata:
     app: miiingle
     {{- include "user-api.labels" . | nindent 4 }}
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: miiingle
@@ -22,6 +22,8 @@ spec:
           env:
             - name: JAVA_OPTIONS
               value: -Xmx512m
+            - name: LOGGING_LEVEL_ROOT
+              value: DEBUG
             - name: CLIENT_EMAIL
               value: logging
             - name: DATASOURCES_DEFAULT_URL
