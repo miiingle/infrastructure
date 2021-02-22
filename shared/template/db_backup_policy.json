@@ -1,0 +1,26 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "S3BucketAccess",
+      "Effect": "Allow",
+      "Action": [
+        "s3:*"
+      ],
+      "Resource": [
+        "${s3_bucket_arn}",
+        "${s3_bucket_arn}/*"
+      ]
+    },
+    {
+      "Sid": "KMSAccess",
+      "Effect": "Allow",
+      "Action": [
+        "kms:*"
+      ],
+      "Resource": [
+        "${kms_key_arn}"
+      ]
+    }
+  ]
+}
