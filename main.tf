@@ -47,12 +47,13 @@ module "api_gateway" {
 }
 
 module "rds" {
-  source        = "./databases/rds"
-  org           = var.org
-  env           = var.env
-  common_tags   = var.common_tags
-  instance_type = var.rds_instance_type
-  instance_port = var.rds_instance_port
+  source              = "./databases/rds"
+  org                 = var.org
+  env                 = var.env
+  common_tags         = var.common_tags
+  instance_type       = var.rds_instance_type
+  instance_port       = var.rds_instance_port
+  snapshot_identifier = var.rds_snapshot_identifier
 
   vpc_id  = module.network.vpc_id
   subnets = module.network.private_subnets

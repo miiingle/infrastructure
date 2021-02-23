@@ -1,6 +1,6 @@
 
 resource "aws_db_proxy" "db_transaction" {
-  name                   = "${var.org}-${var.env}-rds-${random_pet.rds_instance_name.id}-proxy"
+  name                   = "${var.org}-${var.env}-rds-proxy"
   debug_logging          = true
   engine_family          = "POSTGRESQL"
   idle_client_timeout    = 1800
@@ -38,7 +38,8 @@ resource "aws_db_proxy_target" "db_transaction_proxy_target" {
 }
 
 resource "aws_secretsmanager_secret" "db_transaction_credentials" {
-  name = "${var.org}-${var.env}-rds-${random_pet.rds_instance_name.id}-credentials"
+  name                    = "${var.org}-${var.env}-rds-credentials"
+  recovery_window_in_days = 0
 }
 
 resource "aws_secretsmanager_secret_version" "psql-secret" {

@@ -11,3 +11,7 @@ variable "db_name" {
   type        = string
   default     = "postgres"
 }
+
+variable "snapshot_identifier" {
+  type = string
+}

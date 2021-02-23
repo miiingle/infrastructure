@@ -3,7 +3,7 @@ resource "aws_db_instance" "db_transaction" {
   storage_type          = "gp2"
   allocated_storage     = 50
   max_allocated_storage = 1000
-  identifier            = "${var.org}-${var.env}-rds-${random_pet.rds_instance_name.id}"
+  identifier            = "${var.org}-${var.env}-rds"
   name                  = var.db_name
   username              = jsondecode(data.aws_secretsmanager_secret_version.db_backup_credentials.secret_string)["username"]
   password              = jsondecode(data.aws_secretsmanager_secret_version.db_backup_credentials.secret_string)["password"]
@@ -15,11 +15,11 @@ resource "aws_db_instance" "db_transaction" {
   vpc_security_group_ids = [aws_security_group.db_transaction.id]
   db_subnet_group_name   = aws_db_subnet_group.transaction_db.name
 
-  //snapshot_identifier = "miiingle-shared-rds-initial-data"
+  snapshot_identifier = var.snapshot_identifier
 
   performance_insights_enabled = true
 
-  final_snapshot_identifier = "${var.org}-${var.env}-rds-${random_pet.rds_instance_name.id}-final-snapshot-${formatdate("YYYYMMDDHHmm", timestamp())}"
+  final_snapshot_identifier = "${var.org}-${var.env}-rds-final-snapshot-${formatdate("YYYYMMDDHHmm", timestamp())}"
   deletion_protection       = false
 
   lifecycle {
@@ -45,5 +45,3 @@ data "aws_secretsmanager_secret" "db_backup_credentials" {
 data "aws_secretsmanager_secret_version" "db_backup_credentials" {
   secret_id = data.aws_secretsmanager_secret.db_backup_credentials.id
 }
-
-resource "random_pet" "rds_instance_name" {}

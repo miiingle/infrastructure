@@ -88,3 +88,10 @@ variable "api_gateway_domain_prefix" {
   type        = string
   default     = "dev.api"
 }
+
+# RDS
+variable "rds_snapshot_identifier" {
+  description = "Seed snapshot to start from an existing database"
+  type        = string
+  default     = "miiingle-shared-rds-initial-data"
+}
