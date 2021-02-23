@@ -5,8 +5,8 @@ resource "aws_db_instance" "db_transaction" {
   max_allocated_storage = 1000
   identifier            = "${var.org}-${var.env}-rds-${random_pet.rds_instance_name.id}"
   name                  = var.db_name
-  username              = random_string.rds_username.result
-  password              = random_password.rds_password.result
+  username              = jsondecode(data.aws_secretsmanager_secret_version.db_backup_credentials.secret_string)["username"]
+  password              = jsondecode(data.aws_secretsmanager_secret_version.db_backup_credentials.secret_string)["password"]
 
   engine                 = "postgres"
   engine_version         = "11.6"
@@ -14,6 +14,8 @@ resource "aws_db_instance" "db_transaction" {
   port                   = var.instance_port
   vpc_security_group_ids = [aws_security_group.db_transaction.id]
   db_subnet_group_name   = aws_db_subnet_group.transaction_db.name
+
+  //snapshot_identifier = "miiingle-shared-rds-initial-data"
 
   performance_insights_enabled = true
 
@@ -36,16 +38,12 @@ resource "aws_db_subnet_group" "transaction_db" {
   }, var.common_tags)
 }
 
-resource "random_string" "rds_username" {
-  length  = 10
-  special = false
-  number  = false
-  upper   = false
+data "aws_secretsmanager_secret" "db_backup_credentials" {
+  name = "miiingle-shared-db-backup-credentials"
 }
 
-resource "random_password" "rds_password" {
-  length  = 32
-  special = false
+data "aws_secretsmanager_secret_version" "db_backup_credentials" {
+  secret_id = data.aws_secretsmanager_secret.db_backup_credentials.id
 }
 
 resource "random_pet" "rds_instance_name" {}

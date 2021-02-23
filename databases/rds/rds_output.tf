@@ -11,9 +11,9 @@ output "host" {
 }
 
 output "master_username" {
-  value = random_string.rds_username.result
+  value = aws_db_instance.db_transaction.username
 }
 
 output "master_password" {
-  value = random_password.rds_password.result
+  value = aws_db_instance.db_transaction.password
 }

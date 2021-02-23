@@ -49,10 +49,10 @@ resource "aws_secretsmanager_secret_version" "psql-secret" {
 data "template_file" "rds_secrets" {
   template = file("${path.module}/template/rds-secrets.json")
   vars = {
-    username             = random_string.rds_username.result
-    password             = random_password.rds_password.result
-    engine               = "postgres"
+    username             = aws_db_instance.db_transaction.username
+    password             = aws_db_instance.db_transaction.password
     host                 = aws_db_instance.db_transaction.address
+    engine               = "postgres"
     dbname               = var.db_name
     port                 = var.instance_port
     dbInstanceIdentifier = aws_db_instance.db_transaction.id
