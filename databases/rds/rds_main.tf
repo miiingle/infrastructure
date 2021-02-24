@@ -15,9 +15,11 @@ resource "aws_db_instance" "db_transaction" {
   vpc_security_group_ids = [aws_security_group.db_transaction.id]
   db_subnet_group_name   = aws_db_subnet_group.transaction_db.name
 
-  snapshot_identifier = var.snapshot_identifier
-
   performance_insights_enabled = true
+
+  snapshot_identifier     = var.snapshot_identifier
+  backup_retention_period = 35
+  backup_window           = "00:00-01:00"
 
   final_snapshot_identifier = "${var.org}-${var.env}-rds-final-snapshot-${formatdate("YYYYMMDDHHmm", timestamp())}"
   deletion_protection       = false
