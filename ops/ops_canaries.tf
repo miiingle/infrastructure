@@ -2,10 +2,11 @@
 resource "aws_synthetics_canary" "user_api" {
   depends_on = [data.archive_file.canary_api_scripts]
 
-  name                 = "${var.env}_api_health"
+  name                 = "mn_${var.env}_api_health"
   artifact_s3_location = "s3://${aws_s3_bucket.ops_shared_bucket.bucket}/canary/artifact"
   execution_role_arn   = aws_iam_role.canary_role.arn
-  handler              = "exports.handler"
+  handler              = "apiHealthCheck.handler"
+  start_canary         = true
   zip_file             = data.archive_file.canary_api_scripts.output_path
   runtime_version      = "syn-nodejs-puppeteer-3.0"
 
