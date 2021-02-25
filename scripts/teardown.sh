@@ -7,4 +7,5 @@ terraform state rm 'module.kubernetes.helm_release.application_user_api'
 terraform state rm 'module.kubernetes.helm_release.cloudwatch_utilities'
 terraform state rm 'module.kubernetes.helm_release.cluster_autoscaler'
 terraform state rm 'module.kubernetes.module.eks_cluster.kubernetes_config_map.aws_auth[0]'
+aws s3 rm s3://net.miiingle.dev.ops/ --recursive
 terraform destroy --auto-approve
