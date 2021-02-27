@@ -89,6 +89,17 @@ variable "api_gateway_domain_prefix" {
   default     = "dev.api"
 }
 
+variable "api_gateway_cors_whitelist" {
+  description = "CORS Origins whitelist for API Gateway needed for the webapp and postman to work"
+  type        = list(string)
+
+  default = [
+    "https://dark-desert-6025.postman.co",
+    "https://dev.app.miiingle.net",
+    "http://localhost:4200"
+  ]
+}
+
 # RDS
 variable "rds_snapshot_identifier" {
   description = "Seed snapshot to start from an existing database"

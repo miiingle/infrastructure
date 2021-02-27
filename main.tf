@@ -34,12 +34,13 @@ module "kubernetes" {
 }
 
 module "api_gateway" {
-  source        = "./api-gateway"
-  org           = var.org
-  env           = var.env
-  common_tags   = var.common_tags
-  domain_root   = var.api_gateway_domain_root
-  domain_prefix = var.api_gateway_domain_prefix
+  source             = "./api-gateway"
+  org                = var.org
+  env                = var.env
+  common_tags        = var.common_tags
+  domain_root        = var.api_gateway_domain_root
+  domain_prefix      = var.api_gateway_domain_prefix
+  cors_allow_origins = var.api_gateway_cors_whitelist
 
   vpc_id                  = module.network.vpc_id
   vpc_link_subnets        = module.network.private_subnets
