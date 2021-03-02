@@ -60,6 +60,17 @@ module "rds" {
   subnets = module.network.private_subnets
 }
 
+module "es" {
+  source      = "./databases/elasticsearch"
+  org         = var.org
+  env         = var.env
+  common_tags = var.common_tags
+
+  vpc_id          = module.network.vpc_id
+  aws_region      = var.aws_region
+  private_subnets = module.network.private_subnets
+}
+
 module "operations" {
   source      = "./ops"
   org         = var.org

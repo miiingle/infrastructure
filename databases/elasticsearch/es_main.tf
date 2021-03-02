@@ -3,6 +3,8 @@ locals {
 }
 
 resource "aws_elasticsearch_domain" "elasticsearch" {
+  depends_on = [aws_cloudwatch_log_resource_policy.es]
+
   domain_name           = local.domain_name
   elasticsearch_version = var.es_version
 
