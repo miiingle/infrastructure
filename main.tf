@@ -13,6 +13,7 @@ module "network" {
 
   eks_worker_sg_id   = module.kubernetes.worker_sg_id
   rds_instance_sg_id = module.rds.instance_sg_id
+  es_instance_sg_id  = module.es.sg_id
 }
 
 module "kubernetes" {

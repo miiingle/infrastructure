@@ -8,5 +8,13 @@ variable "private_cidrs" {}
 variable "eks_cluster_name" {}
 
 variable "eks_worker_sg_id" {}
+
 variable "rds_instance_sg_id" {}
-variable "rds_instance_port" {}
+variable "rds_instance_port" {
+  default = 5432
+}
+
+variable "es_instance_sg_id" {}
+variable "es_instance_port" {
+  default = 443
+}
