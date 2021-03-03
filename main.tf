@@ -72,6 +72,16 @@ module "es" {
   private_subnets = module.network.private_subnets
 }
 
+module "redis" {
+  source      = "./databases/redis"
+  org         = var.org
+  env         = var.env
+  common_tags = var.common_tags
+
+  vpc_id          = module.network.vpc_id
+  private_subnets = module.network.private_subnets
+}
+
 module "operations" {
   source      = "./ops"
   org         = var.org
