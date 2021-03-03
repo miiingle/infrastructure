@@ -3,6 +3,8 @@ locals {
 }
 
 resource "aws_elasticache_cluster" "main" {
+  depends_on = [aws_elasticache_subnet_group.main]
+
   cluster_id           = "${var.org}-${var.env}-redis"
   engine               = "redis"
   node_type            = "cache.r5.large"
