@@ -18,6 +18,11 @@ resource "aws_codebuild_project" "user_api" {
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = true
+
+    environment_variable {
+      name  = "CONTAINER_REPOSITORY_URL"
+      value = aws_ecr_repository.user_api.repository_url
+    }
   }
 
   artifacts {
@@ -62,6 +67,11 @@ resource "aws_codebuild_project" "headhunter_api" {
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode             = true
+
+    environment_variable {
+      name  = "CONTAINER_REPOSITORY_URL"
+      value = aws_ecr_repository.headhunter_api.repository_url
+    }
   }
 
   artifacts {
