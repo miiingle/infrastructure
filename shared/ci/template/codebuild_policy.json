@@ -6,7 +6,10 @@
       "Action" : [
         "codecommit:*"
       ],
-      "Resource" : "${user_api_codecommit_arn}"
+      "Resource" : [
+        "${user_api_codecommit_arn}",
+        "${headhunter_api_codecommit_arn}"
+      ]
     },
     {
       "Sid":"CodeBuildAccessPrincipal",
