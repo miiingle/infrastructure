@@ -1,0 +1,88 @@
+# Default values for headhunter-api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 3
+
+image:
+  repository: 327229172692.dkr.ecr.us-east-1.amazonaws.com/miiingle.net.headhunter_api
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+config:
+  es:
+    url: htts://localhost:9300
+  redis:
+    url: redis://localhost:6379
+  rds:
+    host: localhost
+    port: 5432
+    database: postgres
+    schema: public
+    username: postgres
+    passwordSecretName: rds-secret
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths: []
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+   limits:
+     cpu: 1000m
+     memory: 1024Mi
+   requests:
+     cpu: 500m
+     memory: 1024Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 3
+  maxReplicas: 30
+  targetCPUUtilizationPercentage: 25
+  targetMemoryUtilizationPercentage: 30
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
