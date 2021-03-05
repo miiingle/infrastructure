@@ -15,6 +15,10 @@ resource "aws_elasticache_cluster" "main" {
   subnet_group_name  = local.subnet_group_name
   security_group_ids = [aws_security_group.redis.id]
   port               = 6379
+
+  lifecycle {
+    ignore_changes = [engine_version]
+  }
 }
 
 resource "aws_elasticache_subnet_group" "main" {

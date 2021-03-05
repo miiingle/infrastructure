@@ -25,7 +25,7 @@ resource "aws_db_instance" "db_transaction" {
   deletion_protection       = false
 
   lifecycle {
-    ignore_changes = [final_snapshot_identifier]
+    ignore_changes = [final_snapshot_identifier, engine_version]
   }
 
   tags = var.common_tags
