@@ -35,7 +35,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: SERVER_PORT
-              value: 80
+              value: "80"
             - name: SPRING_ELASTICSEARCH_REST_URIS
               value: {{ .Values.config.es.url }}
             - name: SPRING_REDIS_URL
