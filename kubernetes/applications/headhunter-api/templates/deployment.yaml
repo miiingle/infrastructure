@@ -34,6 +34,8 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            - name: SERVER_PORT
+              value: 80
             - name: SPRING_ELASTICSEARCH_REST_URIS
               value: {{ .Values.config.es.url }}
             - name: SPRING_REDIS_URL
@@ -45,7 +47,7 @@ spec:
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
+                  key: {{ .Values.config.rds.passwordSecretKey }}
                   name: {{ .Values.config.rds.passwordSecretName }}
             - name: SPRING_R2DBC_URL
               value: r2dbc:postgresl://{{ .Values.config.rds.host }}:{{ .Values.config.rds.port }}/{{ .Values.config.rds.database }}?currentSchema={{ .Values.config.rds.schema }}
@@ -54,11 +56,11 @@ spec:
             - name: SPRING_R2DBC_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
+                  key: {{ .Values.config.rds.passwordSecretKey }}
                   name: {{ .Values.config.rds.passwordSecretName }}
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 80
               protocol: TCP
           livenessProbe:
             httpGet:

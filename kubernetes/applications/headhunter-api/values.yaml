@@ -21,7 +21,8 @@ config:
     database: postgres
     schema: public
     username: postgres
-    passwordSecretName: rds-secret
+    passwordSecretName: rds-secret-name
+    passwordSecretKey: password
 
 imagePullSecrets: []
 nameOverride: ""
@@ -66,7 +67,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources:
    limits:
      cpu: 1000m
      memory: 1024Mi

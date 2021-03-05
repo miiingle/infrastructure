@@ -12,3 +12,12 @@ variable "secrets" {
   type        = map(string)
   default     = {}
 }
+
+variable "es_url" {}
+variable "redis_url" {}
+
+variable "rds_host" {}
+variable "rds_username" {}
+variable "rds_password" {
+  sensitive = true
+}

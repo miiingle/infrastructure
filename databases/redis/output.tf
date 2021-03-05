@@ -7,5 +7,6 @@ output "port" {
 }
 
 output "endpoint" {
-  value = aws_elasticache_cluster.main.cluster_address
+  //TODO: when the cluster is > 1, this should be some sort of load balancer
+  value = aws_elasticache_cluster.main.cache_nodes.0.address
 }
