@@ -12,7 +12,7 @@ image:
 
 config:
   es:
-    url: htts://localhost:9300
+    url: https://localhost:9300
   redis:
     url: redis://localhost:6379
   rds:

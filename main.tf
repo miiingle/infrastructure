@@ -11,9 +11,11 @@ module "network" {
   eks_cluster_name  = var.eks_cluster_name
   rds_instance_port = var.rds_instance_port
 
-  eks_worker_sg_id   = module.kubernetes.worker_sg_id
-  rds_instance_sg_id = module.rds.instance_sg_id
-  es_instance_sg_id  = module.es.sg_id
+  eks_worker_sg_id    = module.kubernetes.worker_sg_id
+  rds_instance_sg_id  = module.rds.instance_sg_id
+  es_instance_sg_id   = module.es.sg_id
+  redis_cluster_sg_id = module.redis.sg_id
+  redis_port          = module.redis.port
 }
 
 module "kubernetes" {

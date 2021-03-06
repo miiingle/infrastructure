@@ -18,3 +18,8 @@ variable "es_instance_sg_id" {}
 variable "es_instance_port" {
   default = 443
 }
+
+variable "redis_cluster_sg_id" {}
+variable "redis_port" {
+  default = 6379
+}
