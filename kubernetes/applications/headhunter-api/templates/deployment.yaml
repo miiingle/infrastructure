@@ -41,7 +41,7 @@ spec:
             - name: SPRING_REDIS_URL
               value: {{ .Values.config.redis.url }}
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresl://{{ .Values.config.rds.host }}:{{ .Values.config.rds.port }}/{{ .Values.config.rds.database }}?currentSchema={{ .Values.config.rds.schema }}
+              value: jdbc:postgresql://{{ .Values.config.rds.host }}:{{ .Values.config.rds.port }}/{{ .Values.config.rds.database }}?currentSchema={{ .Values.config.rds.schema }}
             - name: SPRING_DATASOURCE_USERNAME
               value: {{ .Values.config.rds.username }}
             - name: SPRING_DATASOURCE_PASSWORD
@@ -50,7 +50,7 @@ spec:
                   key: {{ .Values.config.rds.passwordSecretKey }}
                   name: {{ .Values.config.rds.passwordSecretName }}
             - name: SPRING_R2DBC_URL
-              value: r2dbc:postgresl://{{ .Values.config.rds.host }}:{{ .Values.config.rds.port }}/{{ .Values.config.rds.database }}?currentSchema={{ .Values.config.rds.schema }}
+              value: r2dbc:postgresql://{{ .Values.config.rds.host }}:{{ .Values.config.rds.port }}/{{ .Values.config.rds.database }}?currentSchema={{ .Values.config.rds.schema }}
             - name: SPRING_R2DBC_USERNAME
               value: {{ .Values.config.rds.username }}
             - name: SPRING_R2DBC_PASSWORD
