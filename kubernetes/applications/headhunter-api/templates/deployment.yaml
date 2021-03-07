@@ -34,12 +34,14 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: SERVER_PORT
-              value: "80"
             - name: SPRING_ELASTICSEARCH_REST_URIS
-              value: {{ .Values.config.es.url }}
-            - name: SPRING_REDIS_URL
-              value: {{ .Values.config.redis.url }}
+              value: "https://{{ .Values.config.es.endpoint }}:443"
+            - name: SPRING_DATA_ELASTICSEARCH_CLIENT_REACTIVE_ENDPOINTS
+              value: "{{ .Values.config.es.endpoint }}"
+            - name: SPRING_REDIS_HOST
+              value: "{{ .Values.config.redis.host }}"
+            - name: SPRING_REDIS_PORT
+              value: "{{ .Values.config.redis.port }}"
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://{{ .Values.config.rds.host }}:{{ .Values.config.rds.port }}/{{ .Values.config.rds.database }}?currentSchema={{ .Values.config.rds.schema }}
             - name: SPRING_DATASOURCE_USERNAME
@@ -60,16 +62,16 @@ spec:
                   name: {{ .Values.config.rds.passwordSecretName }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
           livenessProbe:
             httpGet:
               path: /actuator/health
-              port: http
+              port: 8080
           readinessProbe:
             httpGet:
               path: /actuator/health
-              port: http
+              port: 8080
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

@@ -13,8 +13,10 @@ variable "secrets" {
   default     = {}
 }
 
-variable "es_url" {}
-variable "redis_url" {}
+variable "es_endpoint" {}
+
+variable "redis_host" {}
+variable "redis_port" {}
 
 variable "rds_host" {}
 variable "rds_username" {}

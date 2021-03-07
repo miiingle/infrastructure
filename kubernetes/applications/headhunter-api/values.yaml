@@ -1,20 +1,16 @@
-# Default values for headhunter-api.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-replicaCount: 3
+replicaCount: 1
 
 image:
   repository: 327229172692.dkr.ecr.us-east-1.amazonaws.com/miiingle.net.headhunter_api
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
 config:
   es:
-    url: https://localhost:9300
+    endpoint: localhost
   redis:
-    url: redis://localhost:6379
+    host: localhost
+    port: 6379
   rds:
     host: localhost
     port: 5432
@@ -52,7 +48,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  port: 8080
 
 ingress:
   enabled: false
@@ -77,9 +73,9 @@ resources:
 
 autoscaling:
   enabled: false
-  minReplicas: 3
+  minReplicas: 1
   maxReplicas: 30
-  targetCPUUtilizationPercentage: 25
+  targetCPUUtilizationPercentage: 10
   targetMemoryUtilizationPercentage: 30
 
 nodeSelector: {}

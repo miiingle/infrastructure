@@ -39,8 +39,10 @@ module "kubernetes" {
   rds_username = module.rds.master_username
   rds_password = module.rds.master_password
 
-  redis_url = "redis://${module.redis.endpoint}:${module.redis.port}"
-  es_url    = "https://${module.es.endpoint}:443"
+  redis_host = module.redis.endpoint
+  redis_port = module.redis.port
+
+  es_endpoint = module.es.endpoint
 }
 
 module "api_gateway" {

@@ -47,13 +47,18 @@ resource "helm_release" "application_headhunter_api" {
   }
 
   set {
-    name  = "config.es.url"
-    value = var.es_url
+    name  = "config.es.endpoint"
+    value = var.es_endpoint
   }
 
   set {
-    name  = "config.redis.url"
-    value = var.redis_url
+    name  = "config.redis.host"
+    value = var.redis_host
+  }
+
+  set {
+    name  = "config.redis.port"
+    value = var.redis_port
   }
 
   depends_on = [
