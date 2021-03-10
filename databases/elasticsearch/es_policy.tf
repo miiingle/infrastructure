@@ -4,7 +4,7 @@ data "aws_iam_policy_document" "es_access_policy_allow_all" {
       type        = "AWS"
       identifiers = ["*"]
     }
-    actions   = ["es:ESHttpGet"]
+    actions   = ["es:*"]
     resources = ["arn:aws:es:${var.aws_region}:*:domain/${local.domain_name}/*"]
   }
 
