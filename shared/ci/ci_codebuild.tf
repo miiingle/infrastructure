@@ -23,6 +23,11 @@ resource "aws_codebuild_project" "user_api" {
       name  = "CONTAINER_REPOSITORY_URL"
       value = aws_ecr_repository.user_api.repository_url
     }
+
+    environment_variable {
+      name  = "MISC_REPOSITORY_URL"
+      value = aws_ecr_repository.misc.repository_url
+    }
   }
 
   artifacts {
@@ -71,6 +76,11 @@ resource "aws_codebuild_project" "headhunter_api" {
     environment_variable {
       name  = "CONTAINER_REPOSITORY_URL"
       value = aws_ecr_repository.headhunter_api.repository_url
+    }
+
+    environment_variable {
+      name  = "MISC_REPOSITORY_URL"
+      value = aws_ecr_repository.misc.repository_url
     }
   }
 
