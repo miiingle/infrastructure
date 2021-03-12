@@ -54,3 +54,6 @@ resource "aws_ecr_repository" "oracle_graalvm" {
   name = "${var.project_prefix}.oracle_graalvm"
 }
 
+resource "aws_ecr_repository" "misc" {
+  name = "${var.project_prefix}.misc"
+}
