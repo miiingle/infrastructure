@@ -20,6 +20,16 @@ autoscaling:
   targetCPUUtilizationPercentage: 15
   targetMemoryUtilizationPercentage: 50
 
+config:
+  rds:
+    host: localhost
+    port: 5432
+    database: postgres
+    schema: public
+    username: postgres
+    passwordSecretName: rds-secret-name
+    passwordSecretKey: password
+
 env:
   SERVER_PORT: "8080"
   TRACING_ZIPKIN_HTTP_URL: "http://zipkin-service.default:9411"

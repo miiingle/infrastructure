@@ -24,6 +24,15 @@ spec:
               value: "{{ .Values.env.TRACING_ZIPKIN_HTTP_URL }}"
             - name: SERVER_PORT
               value: "{{ .Values.env.SERVER_PORT }}"
+            - name: DATASOURCES_DEFAULT_URL
+              value: jdbc:postgresql://{{ .Values.config.rds.host }}:{{ .Values.config.rds.port }}/{{ .Values.config.rds.database }}?currentSchema={{ .Values.config.rds.schema }}
+            - name: DATASOURCES_DEFAULT_USERNAME
+              value: {{ .Values.config.rds.username }}
+            - name: DATASOURCES_DEFAULT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: {{ .Values.config.rds.passwordSecretKey }}
+                  name: {{ .Values.config.rds.passwordSecretName }}
           ports:
             - name: http
               containerPort: {{ .Values.env.SERVER_PORT }}

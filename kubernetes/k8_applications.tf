@@ -14,6 +14,21 @@ resource "helm_release" "application_user_api" {
     value = "latest-native"
   }
 
+  set {
+    name  = "config.rds.host"
+    value = var.rds_host
+  }
+
+  set {
+    name  = "config.rds.username"
+    value = var.rds_username
+  }
+
+  set {
+    name  = "config.rds.passwordSecretName"
+    value = kubernetes_secret.rds_password.metadata.0.name
+  }
+
   depends_on = [
     module.eks_cluster,
     module.eks_cluster.config_map_aws_auth
