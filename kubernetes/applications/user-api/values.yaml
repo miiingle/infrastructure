@@ -14,11 +14,11 @@ resources:
     memory: 1024Mi
 
 autoscaling:
-  enabled: false
+  enabled: true
   minReplicas: 1
   maxReplicas: 30
-  targetCPUUtilizationPercentage: 25
-  targetMemoryUtilizationPercentage: 25
+  targetCPUUtilizationPercentage: 15
+  targetMemoryUtilizationPercentage: 50
 
 env:
   SERVER_PORT: "8080"

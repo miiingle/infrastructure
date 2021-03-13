@@ -64,8 +64,8 @@ resource "aws_apigatewayv2_stage" "default" {
   default_route_settings {
     data_trace_enabled       = false
     detailed_metrics_enabled = true
-    throttling_burst_limit   = 100
-    throttling_rate_limit    = 100
+    throttling_burst_limit   = 5000
+    throttling_rate_limit    = 10000
   }
 
   tags = var.common_tags
