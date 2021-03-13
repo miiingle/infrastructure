@@ -5,18 +5,13 @@ resource "helm_release" "application_user_api" {
   cleanup_on_fail = true
 
   set {
-    name  = "datasource.secretName"
-    value = kubernetes_secret.all_secrets.metadata.0.name
-  }
-
-  set {
     name  = "image.repository"
     value = "327229172692.dkr.ecr.us-east-1.amazonaws.com/miiingle.net.user_api"
   }
 
   set {
     name  = "image.tag"
-    value = "latest"
+    value = "latest-native"
   }
 
   depends_on = [

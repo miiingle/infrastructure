@@ -4,7 +4,7 @@ resource "aws_db_proxy" "db_transaction" {
   debug_logging          = true
   engine_family          = "POSTGRESQL"
   idle_client_timeout    = 1800
-  require_tls            = true
+  require_tls            = false
   role_arn               = aws_iam_role.iam_for_db_credentials.arn
   vpc_security_group_ids = [aws_security_group.db_transaction_proxy.id]
   vpc_subnet_ids         = var.subnets

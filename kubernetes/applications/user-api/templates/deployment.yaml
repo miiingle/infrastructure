@@ -6,7 +6,7 @@ metadata:
     app: miiingle
     {{- include "user-api.labels" . | nindent 4 }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: miiingle
@@ -17,56 +17,38 @@ spec:
     spec:
       containers:
         - name: application
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-          imagePullPolicy: Always
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
           env:
-            - name: JAVA_OPTIONS
-              value: -Xmx512m
-            - name: LOGGING_LEVEL_ROOT
-              value: DEBUG
-            - name: CLIENT_EMAIL
-              value: logging
-            - name: DATASOURCES_DEFAULT_URL
-              valueFrom:
-                secretKeyRef:
-                  key: rds_url
-                  name: {{ .Values.datasource.secretName }}
-            - name: DATASOURCES_DEFAULT_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  key: rds_username
-                  name: {{ .Values.datasource.secretName }}
-            - name: DATASOURCES_DEFAULT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: rds_password
-                  name: {{ .Values.datasource.secretName }}
             - name: TRACING_ZIPKIN_HTTP_URL
-              value: "http://zipkin-service.default:9411"
+              value: "{{ .Values.env.TRACING_ZIPKIN_HTTP_URL }}"
+            - name: SERVER_PORT
+              value: "{{ .Values.env.SERVER_PORT }}"
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: {{ .Values.env.SERVER_PORT }}
               protocol: TCP
           resources:
-            requests:
-              memory: "1024Mi"
-              cpu: "1000m"
-            limits:
-              memory: "1024Mi"
-              cpu: "1000m"
+            {{- toYaml .Values.resources | nindent 12 }}
+          startupProbe:
+            httpGet:
+              path: /ping/nothing
+              port: {{ .Values.env.SERVER_PORT }}
+            failureThreshold: 30
+            periodSeconds: 5
           livenessProbe:
             failureThreshold: 6
             successThreshold: 1
             periodSeconds: 30
             timeoutSeconds: 30
             httpGet:
-              path: /health
-              port: 8080
+              path: /ping/nothing
+              port: {{ .Values.env.SERVER_PORT }}
           readinessProbe:
             failureThreshold: 1
             successThreshold: 1
             periodSeconds: 10
             timeoutSeconds: 5
             httpGet:
-              path: /health
-              port: 8080
+              path: /ping/nothing
+              port: {{ .Values.env.SERVER_PORT }}

@@ -1,17 +1,28 @@
-# Default values for user-api.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+image:
+  repository: "<required value>"
+  tag: "latest"
+  pullPolicy: Always
 
 replicaCount: 1
 
-image:
-  repository: startupbuilder/miiingle-net-user-api
-  pullPolicy: IfNotPresent
-  tag: "latest"
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 1024Mi
 
-datasource:
-  secretName: "miiingle.dev.secrets"
-  maxPoolSize: 10
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 30
+  targetCPUUtilizationPercentage: 25
+  targetMemoryUtilizationPercentage: 25
+
+env:
+  SERVER_PORT: "8080"
+  TRACING_ZIPKIN_HTTP_URL: "http://zipkin-service.default:9411"
 
 imagePullSecrets: []
 nameOverride: ""
