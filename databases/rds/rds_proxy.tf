@@ -12,7 +12,7 @@ resource "aws_db_proxy" "db_transaction" {
   //noinspection HCLUnknownBlockType
   auth {
     auth_scheme = "SECRETS"
-    description = "example"
+    description = "Credentials for RDS Proxy"
     iam_auth    = "DISABLED"
     secret_arn  = aws_secretsmanager_secret.db_transaction_credentials.arn
   }

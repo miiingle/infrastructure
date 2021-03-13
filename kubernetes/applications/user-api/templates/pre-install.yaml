@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}"
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}"
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: pre-install-job
+        image: "327229172692.dkr.ecr.us-east-1.amazonaws.com/miiingle.net.misc:user-api-liquibase"
+        env:
+          - name: URL
+            value: "jdbc:postgresql://{{ .Values.config.rds.host }}:{{ .Values.config.rds.port }}/{{ .Values.config.rds.database }}?currentSchema={{ .Values.config.rds.schema }}&ssl=true&sslmode=require"
+          - name: USERNAME
+            value: "{{ .Values.config.rds.username }}"
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: "{{ .Values.config.rds.passwordSecretKey }}"
+                name: "{{ .Values.config.rds.passwordSecretName }}"

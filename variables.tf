@@ -104,5 +104,5 @@ variable "api_gateway_cors_whitelist" {
 variable "rds_snapshot_identifier" {
   description = "Seed snapshot to start from an existing database"
   type        = string
-  default     = "miiingle-shared-rds-initial-data"
+  default     = ""
 }

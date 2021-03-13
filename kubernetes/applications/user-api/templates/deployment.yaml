@@ -25,7 +25,7 @@ spec:
             - name: SERVER_PORT
               value: "{{ .Values.env.SERVER_PORT }}"
             - name: DATASOURCES_DEFAULT_URL
-              value: jdbc:postgresql://{{ .Values.config.rds.host }}:{{ .Values.config.rds.port }}/{{ .Values.config.rds.database }}?currentSchema={{ .Values.config.rds.schema }}
+              value: "jdbc:postgresql://{{ .Values.config.rds.host }}:{{ .Values.config.rds.port }}/{{ .Values.config.rds.database }}?currentSchema={{ .Values.config.rds.schema }}&ssl=true&sslmode=require"
             - name: DATASOURCES_DEFAULT_USERNAME
               value: {{ .Values.config.rds.username }}
             - name: DATASOURCES_DEFAULT_PASSWORD

@@ -9,7 +9,7 @@ resource "aws_db_instance" "db_transaction" {
   password              = jsondecode(data.aws_secretsmanager_secret_version.db_backup_credentials.secret_string)["password"]
 
   engine                 = "postgres"
-  engine_version         = "13.1"
+  engine_version         = "11.10"
   publicly_accessible    = false
   port                   = var.instance_port
   vpc_security_group_ids = [aws_security_group.db_transaction.id]
