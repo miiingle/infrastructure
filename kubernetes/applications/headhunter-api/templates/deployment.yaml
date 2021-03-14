@@ -55,8 +55,6 @@ spec:
                   name: {{ .Values.config.rds.passwordSecretName }}
             - name: SPRING_R2DBC_URL
               value: "r2dbc:postgresql://{{ .Values.config.rds.host }}:{{ .Values.config.rds.port }}/{{ .Values.config.rds.database }}?currentSchema={{ .Values.config.rds.schema }}&ssl=true&sslmode=require"
-            - name: SPRING_R2DBC_PROPERTIES_SSL
-              value: "true"
             - name: SPRING_R2DBC_USERNAME
               value: {{ .Values.config.rds.username }}
             - name: SPRING_R2DBC_PASSWORD
@@ -72,11 +70,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /ping/server
               port: 8080
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /ping/server
               port: 8080
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

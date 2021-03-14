@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: 327229172692.dkr.ecr.us-east-1.amazonaws.com/miiingle.net.headhunter_api
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: "latest"
 
 config:
@@ -76,7 +76,7 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 30
   targetCPUUtilizationPercentage: 15
-  targetMemoryUtilizationPercentage: 30
+  targetMemoryUtilizationPercentage: 50
 
 nodeSelector: {}
 
