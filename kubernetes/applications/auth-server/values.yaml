@@ -1,0 +1,64 @@
+replicaCount: 1
+
+image:
+  repository: "327229172692.dkr.ecr.us-east-1.amazonaws.com/miiingle.net.misc"
+  tag: "keycloak-simulator-latest"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+config:
+  rds:
+    host: localhost
+    port: 5432
+    database: postgres
+    schema: public
+    username: postgres
+    passwordSecretName: rds-secret-name
+    passwordSecretKey: password
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths: []
+  tls: []
+
+resources:
+   limits:
+     cpu: 2000m
+     memory: 4096Mi
+   requests:
+     cpu: 1000m
+     memory: 2048Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

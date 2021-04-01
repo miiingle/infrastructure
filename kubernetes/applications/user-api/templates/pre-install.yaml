@@ -23,7 +23,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: pre-install-job
-        image: "327229172692.dkr.ecr.us-east-1.amazonaws.com/miiingle.net.misc:user-api-liquibase"
+        image: "327229172692.dkr.ecr.us-east-1.amazonaws.com/miiingle.net.misc:liquibase-user-api-latest"
         env:
           - name: URL
             value: "jdbc:postgresql://{{ .Values.config.rds.host }}:{{ .Values.config.rds.port }}/{{ .Values.config.rds.database }}?currentSchema={{ .Values.config.rds.schema }}&ssl=true&sslmode=require"
